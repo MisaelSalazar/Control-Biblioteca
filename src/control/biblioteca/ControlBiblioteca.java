@@ -4,6 +4,8 @@
  */
 package control.biblioteca;
 
+import control.biblioteca.views.login;
+
 /**
  *
  * @author Misae
@@ -15,7 +17,12 @@ public class ControlBiblioteca {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        System.out.println("Hola :P");
+        //Crear objeto ventana login
+        login objLogin = new login();
+        //Centrar ventana en la pantalla
+        objLogin.setLocationRelativeTo(null);
+        //Hacer visible la ventana
+        objLogin.setVisible(true);
     }
     
 }
