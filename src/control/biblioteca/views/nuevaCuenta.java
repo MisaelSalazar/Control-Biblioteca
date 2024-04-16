@@ -4,21 +4,31 @@
  */
 package control.biblioteca.views;
 
-import java.awt.event.WindowEvent;
+import control.biblioteca.controlador.Encriptar;
+import control.biblioteca.controlador.Mensajes;
+import control.biblioteca.controlador.TextPrompt;
+import control.biblioteca.dao.DAOUsuarioImpl;
+import control.biblioteca.model.Usuario;
 
 /**
  *
  * @author Misae
  */
 public class nuevaCuenta extends javax.swing.JFrame {
-    
+
+    private DAOUsuarioImpl usuarioDAO;
+    private Mensajes msj = new Mensajes();
 
     /**
      * Creates new form nuevaCuenta
      */
     public nuevaCuenta() {
         super("Control Biblioteca");
+        this.usuarioDAO = new DAOUsuarioImpl();
         initComponents();
+        TextPrompt placeholder = new TextPrompt("Ingresa tu usuario", txtUserName);
+        placeholder = new TextPrompt("Ingresa tu contraseña", txtUserPassword1);
+        placeholder = new TextPrompt("Repite tu contraseña", txtUserPassword2);
     }
 
     /**
@@ -74,6 +84,11 @@ public class nuevaCuenta extends javax.swing.JFrame {
         btnAcceder.setForeground(new java.awt.Color(0, 0, 0));
         btnAcceder.setText("Crear");
         btnAcceder.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        btnAcceder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAccederActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -130,6 +145,29 @@ public class nuevaCuenta extends javax.swing.JFrame {
         txtUserName.setText("Nombre de Usuario");
     }//GEN-LAST:event_txtUserNameActionPerformed
 
+    private void btnAccederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccederActionPerformed
+        try {
+            if ("".equals(txtUserName.getText()) || "".equals(txtUserPassword1.getText()) || "".equals(txtUserPassword2.getText())) {
+                msj.MensajeError("Rellena todos los campos", "Iniciar Sesión");
+            } else {
+                // Comparar si las cotrasenas ingresadas son iguales
+                if (txtUserPassword1.getText().equals(txtUserPassword2.getText())) {
+                    // Encriptar la contrasena
+                    String contraEncrip = Encriptar.encriptarContrasena(txtUserPassword1.getText());
+                    // Instanciar un nuevo usuario
+                    Usuario usuario = new Usuario(txtUserName.getText(), contraEncrip);
+                    // Llamar al metodo guardarUsuario (registrar)
+                    usuarioDAO.registrarUsuario(usuario);
+                    msj.MensajeExitoso("Cuenta creada con éxito", "Iniciar Sesión");
+                } else {
+                    msj.MensajeError("Las contraseñas no coinciden", "Iniciar Sesión");
+                }
+            }
+        } catch (Exception e) {
+            msj.MensajeError("Error de creación de cuenta: " + e, "Iniciar Sesión");
+        }
+    }//GEN-LAST:event_btnAccederActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -161,9 +199,9 @@ public class nuevaCuenta extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new nuevaCuenta().setVisible(true);
-                
+
             }
-            
+
         });
     }
 

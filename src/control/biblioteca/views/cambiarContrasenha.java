@@ -4,18 +4,31 @@
  */
 package control.biblioteca.views;
 
+import control.biblioteca.controlador.Encriptar;
+import control.biblioteca.controlador.Mensajes;
+import control.biblioteca.controlador.TextPrompt;
+import control.biblioteca.dao.DAOUsuarioImpl;
+import control.biblioteca.model.Usuario;
+
 /**
  *
  * @author Misae
  */
 public class cambiarContrasenha extends javax.swing.JFrame {
 
+    private DAOUsuarioImpl usuarioDAO;
+    private Mensajes msj = new Mensajes();
+
     /**
      * Creates new form cambiarContraseña
      */
     public cambiarContrasenha() {
         super("Control Biblioteca");
+        this.usuarioDAO = new DAOUsuarioImpl();
         initComponents();
+        TextPrompt placeholder = new TextPrompt("Ingresa tu usuario", txtUserName);
+        placeholder = new TextPrompt("Ingresa tu contraseña", txtUserPassword1);
+        placeholder = new TextPrompt("Repite tu contraseña", txtUserPassword2);
     }
 
     /**
@@ -70,6 +83,11 @@ public class cambiarContrasenha extends javax.swing.JFrame {
         btnAcceder.setForeground(new java.awt.Color(0, 0, 0));
         btnAcceder.setText("Actualizar");
         btnAcceder.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        btnAcceder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAccederActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -125,6 +143,35 @@ public class cambiarContrasenha extends javax.swing.JFrame {
         // TODO add your handling code here:
         txtUserName.setText("Nombre de Usuario");
     }//GEN-LAST:event_txtUserNameActionPerformed
+
+    private void btnAccederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccederActionPerformed
+        try {
+            if ("".equals(txtUserName.getText()) || "".equals(txtUserPassword1.getText()) || "".equals(txtUserPassword2.getText())) {
+                msj.MensajeError("Rellena todos los campos", "Iniciar Sesión");
+            } else {
+                // Comparar si las cotrasenas ingresadas son iguales
+                if (txtUserPassword1.getText().equals(txtUserPassword2.getText())) {
+                    // Buscar al usuario en la base de datos mediante su "username"
+                    Usuario usuario = usuarioDAO.buscarUsuarioPorNombre(txtUserName.getText());
+                    // Encriptar la contrasena
+                    String contraEncrip = Encriptar.encriptarContrasena(txtUserPassword1.getText());
+                    if (usuario != null) {
+                        // Asignar la contrasena al usuario
+                        usuario.setContrasena(contraEncrip);
+                        // Actualizar la contrasena del usuario
+                        usuarioDAO.actualizarUsuario(usuario);
+                        msj.MensajeExitoso("Contraseña cambiada exitosamente", "Mensaje");
+                    } else {
+                        msj.MensajeError("Usuario no encontrado", "Cambiar Contraseña");
+                    }
+                } else {
+                    msj.MensajeError("Las contraseñas no coinciden", "Cambiar Contraseña");
+                }
+            }
+        } catch (Exception e) {
+            msj.MensajeError("Error al cambiar la contraseña: " + e.getMessage(), "Error");
+        }
+    }//GEN-LAST:event_btnAccederActionPerformed
 
     /**
      * @param args the command line arguments
