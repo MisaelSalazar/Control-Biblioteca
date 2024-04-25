@@ -213,6 +213,7 @@ public class login extends javax.swing.JFrame {
                 System.out.println("*Mensaje de Error*");
             }
         }
+        menuPrincipal obj = new menuPrincipal(); obj.setVisible(true);
     }//GEN-LAST:event_btnAccederActionPerformed
 
     /**

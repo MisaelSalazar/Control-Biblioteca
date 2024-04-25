@@ -14,7 +14,9 @@ public class menuPrincipal extends javax.swing.JFrame {
      * Creates new form menuPrincipal
      */
     public menuPrincipal() {
+        
         initComponents();
+        
     }
 
     /**
@@ -26,17 +28,148 @@ public class menuPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        btnInicio = new javax.swing.JButton();
+        btnLibros = new javax.swing.JButton();
+        btnPrestamos = new javax.swing.JButton();
+        btnDevoluciones = new javax.swing.JButton();
+        btnAlumnos = new javax.swing.JButton();
+        btnUsuarios = new javax.swing.JButton();
+        contenedor = new javax.swing.JPanel();
+        libros = new javax.swing.JPanel();
+        inicio = new javax.swing.JPanel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel2.setBackground(new java.awt.Color(160, 212, 104));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 900, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 80, Short.MAX_VALUE)
+        );
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 80));
+
+        jPanel3.setBackground(new java.awt.Color(148, 81, 54));
+
+        btnInicio.setText("Inicio");
+
+        btnLibros.setText("Libros");
+
+        btnPrestamos.setText("Prestamos ");
+
+        btnDevoluciones.setText("Devoluciones");
+
+        btnAlumnos.setText("Alumnos");
+
+        btnUsuarios.setText("Usuarios");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnPrestamos)
+                    .addComponent(btnDevoluciones)
+                    .addComponent(btnAlumnos)
+                    .addComponent(btnUsuarios)
+                    .addComponent(btnInicio)
+                    .addComponent(btnLibros))
+                .addContainerGap(103, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(46, 46, 46)
+                .addComponent(btnInicio)
+                .addGap(18, 18, 18)
+                .addComponent(btnLibros)
+                .addGap(18, 18, 18)
+                .addComponent(btnPrestamos)
+                .addGap(18, 18, 18)
+                .addComponent(btnDevoluciones)
+                .addGap(18, 18, 18)
+                .addComponent(btnAlumnos)
+                .addGap(18, 18, 18)
+                .addComponent(btnUsuarios)
+                .addContainerGap(166, Short.MAX_VALUE))
+        );
+
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 210, 440));
+
+        libros.setVisible(false);
+        libros.setBackground(new java.awt.Color(204, 0, 0));
+
+        javax.swing.GroupLayout librosLayout = new javax.swing.GroupLayout(libros);
+        libros.setLayout(librosLayout);
+        librosLayout.setHorizontalGroup(
+            librosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        librosLayout.setVerticalGroup(
+            librosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        inicio.setBackground(new java.awt.Color(102, 255, 51));
+
+        javax.swing.GroupLayout inicioLayout = new javax.swing.GroupLayout(inicio);
+        inicio.setLayout(inicioLayout);
+        inicioLayout.setHorizontalGroup(
+            inicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        inicioLayout.setVerticalGroup(
+            inicioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout contenedorLayout = new javax.swing.GroupLayout(contenedor);
+        contenedor.setLayout(contenedorLayout);
+        contenedorLayout.setHorizontalGroup(
+            contenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(contenedorLayout.createSequentialGroup()
+                .addGroup(contenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(contenedorLayout.createSequentialGroup()
+                        .addGap(284, 284, 284)
+                        .addComponent(libros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(contenedorLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(inicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(306, Short.MAX_VALUE))
+        );
+        contenedorLayout.setVerticalGroup(
+            contenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(contenedorLayout.createSequentialGroup()
+                .addComponent(inicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(111, 111, 111)
+                .addComponent(libros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(129, Short.MAX_VALUE))
+        );
+
+        jPanel1.add(contenedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 80, 690, 440));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -78,5 +211,17 @@ public class menuPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAlumnos;
+    private javax.swing.JButton btnDevoluciones;
+    private javax.swing.JButton btnInicio;
+    private javax.swing.JButton btnLibros;
+    private javax.swing.JButton btnPrestamos;
+    private javax.swing.JButton btnUsuarios;
+    private javax.swing.JPanel contenedor;
+    private javax.swing.JPanel inicio;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel libros;
     // End of variables declaration//GEN-END:variables
 }
