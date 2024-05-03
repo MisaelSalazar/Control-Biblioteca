@@ -1424,14 +1424,23 @@ public class menuPrincipal extends javax.swing.JFrame {
 
     private void btnAgregarAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarAlumnoActionPerformed
         // TODO add your handling code here:
+        nuevoAlumno objnuevoAlumno = new nuevoAlumno();
+        objnuevoAlumno.setVisible(true);
+        objnuevoAlumno.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnAgregarAlumnoActionPerformed
 
     private void btnEditarAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarAlumnoActionPerformed
         // TODO add your handling code here:
+        editarAlumno objEditarAlumno = new editarAlumno();
+        objEditarAlumno.setVisible(true);
+        objEditarAlumno.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnEditarAlumnoActionPerformed
 
     private void btnBorrarAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarAlumnoActionPerformed
         // TODO add your handling code here:
+        eliminarAlumno objEliminarAlumno = new eliminarAlumno();
+        objEliminarAlumno.setVisible(true);
+        objEliminarAlumno.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnBorrarAlumnoActionPerformed
 
     private void tblAlumnosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblAlumnosMouseClicked
