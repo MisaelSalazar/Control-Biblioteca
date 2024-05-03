@@ -15,6 +15,12 @@ import control.biblioteca.dao.DAOUsuarioImpl;
 import control.biblioteca.model.Alumno;
 import control.biblioteca.model.Libro;
 import control.biblioteca.model.Prestamo;
+import control.biblioteca.views.vistasLibros.editarLibro;
+import control.biblioteca.views.vistasLibros.eliminarLibro;
+import control.biblioteca.views.vistasLibros.nuevoLibro;
+import control.biblioteca.views.vistasUsuarios.editarUsuario;
+import control.biblioteca.views.vistasUsuarios.eliminarUsuario;
+import control.biblioteca.views.vistasUsuarios.nuevoUsuario;
 import java.awt.event.KeyEvent;
 import java.util.Date;
 import java.util.List;
@@ -1380,6 +1386,9 @@ public class menuPrincipal extends javax.swing.JFrame {
 
     private void btnAgregarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarUsuarioActionPerformed
 
+        nuevoUsuario objNuevoUsuario = new nuevoUsuario();
+        objNuevoUsuario.setVisible(true);
+        objNuevoUsuario.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnAgregarUsuarioActionPerformed
 
     private void btnBuscar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscar1ActionPerformed
@@ -1388,10 +1397,16 @@ public class menuPrincipal extends javax.swing.JFrame {
 
     private void btnBorrarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarUsuarioActionPerformed
         // TODO add your handling code here:
+        eliminarUsuario objEliminarUsuario = new eliminarUsuario();
+        objEliminarUsuario.setVisible(true);
+        objEliminarUsuario.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnBorrarUsuarioActionPerformed
 
     private void btnEditarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarUsuarioActionPerformed
         // TODO add your handling code here:
+        editarUsuario objEditarUsuario = new editarUsuario();
+        objEditarUsuario.setVisible(true);
+        objEditarUsuario.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnEditarUsuarioActionPerformed
 
     private void txtBuscarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarLibroActionPerformed
@@ -1404,14 +1419,23 @@ public class menuPrincipal extends javax.swing.JFrame {
 
     private void btnBorrarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarLibroActionPerformed
         // TODO add your handling code here:
+        eliminarLibro objEliminarLibro = new eliminarLibro();
+        objEliminarLibro.setVisible(true);
+        objEliminarLibro.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnBorrarLibroActionPerformed
 
     private void btnEditarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarLibroActionPerformed
         // TODO add your handling code here:
+        editarLibro objEditarLibro = new editarLibro();
+        objEditarLibro.setVisible(true);
+        objEditarLibro.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnEditarLibroActionPerformed
 
     private void btnAgregarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarLibroActionPerformed
         // TODO add your handling code here:
+        nuevoLibro objLibroUsuario = new nuevoLibro();
+        objLibroUsuario.setVisible(true);
+        objLibroUsuario.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnAgregarLibroActionPerformed
 
     private void txtBuscarAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarAlumnosActionPerformed

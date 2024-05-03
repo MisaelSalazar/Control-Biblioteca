@@ -39,7 +39,7 @@ public class eliminarAlumno extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         txtNombreAlumno = new javax.swing.JTextField();
-        btnAgregarAlumno = new javax.swing.JButton();
+        btnEliminarAlumno = new javax.swing.JButton();
         txtApellidosAlumno = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         txtNumControl = new javax.swing.JTextField();
@@ -69,14 +69,14 @@ public class eliminarAlumno extends javax.swing.JFrame {
             }
         });
 
-        btnAgregarAlumno.setBackground(new java.awt.Color(218, 68, 83));
-        btnAgregarAlumno.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        btnAgregarAlumno.setForeground(new java.awt.Color(0, 0, 0));
-        btnAgregarAlumno.setText("Eliminar");
-        btnAgregarAlumno.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 10, 5, 10));
-        btnAgregarAlumno.addActionListener(new java.awt.event.ActionListener() {
+        btnEliminarAlumno.setBackground(new java.awt.Color(218, 68, 83));
+        btnEliminarAlumno.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnEliminarAlumno.setForeground(new java.awt.Color(0, 0, 0));
+        btnEliminarAlumno.setText("Eliminar");
+        btnEliminarAlumno.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        btnEliminarAlumno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarAlumnoActionPerformed(evt);
+                btnEliminarAlumnoActionPerformed(evt);
             }
         });
 
@@ -162,7 +162,7 @@ public class eliminarAlumno extends javax.swing.JFrame {
                         .addComponent(jLabel5))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(337, 337, 337)
-                        .addComponent(btnAgregarAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnEliminarAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(149, 149, 149)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -186,7 +186,7 @@ public class eliminarAlumno extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnAgregarAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnEliminarAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36))
         );
 
@@ -208,9 +208,9 @@ public class eliminarAlumno extends javax.swing.JFrame {
 
     }//GEN-LAST:event_txtNombreAlumnoActionPerformed
 
-    private void btnAgregarAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarAlumnoActionPerformed
+    private void btnEliminarAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarAlumnoActionPerformed
         
-    }//GEN-LAST:event_btnAgregarAlumnoActionPerformed
+    }//GEN-LAST:event_btnEliminarAlumnoActionPerformed
 
     private void txtNumControlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNumControlActionPerformed
         // TODO add your handling code here:
@@ -257,7 +257,7 @@ public class eliminarAlumno extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAgregarAlumno;
+    private javax.swing.JButton btnEliminarAlumno;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
