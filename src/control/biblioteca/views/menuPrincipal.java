@@ -16,10 +16,8 @@ import control.biblioteca.model.Alumno;
 import control.biblioteca.model.Libro;
 import control.biblioteca.model.Prestamo;
 import control.biblioteca.views.vistasLibros.editarLibro;
-import control.biblioteca.views.vistasLibros.eliminarLibro;
 import control.biblioteca.views.vistasLibros.nuevoLibro;
 import control.biblioteca.views.vistasUsuarios.editarUsuario;
-import control.biblioteca.views.vistasUsuarios.eliminarUsuario;
 import control.biblioteca.views.vistasUsuarios.nuevoUsuario;
 import java.awt.event.KeyEvent;
 import java.util.Date;
@@ -1141,6 +1139,21 @@ public class menuPrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private Alumno seleccionarId() {
+        // Seleccionar fila
+        int filaSeleccionada = tblAlumnos.getSelectedRow();
+        // Si se ha seleccionado una fila entonces
+        if (filaSeleccionada != -1) {
+            // Obtener el objeto Alumno correspondiente a la fila seleccionada
+            Alumno alumnoSeleccionado = alumnoDAO.obtenerAlumnos().get(filaSeleccionada);
+            // Guardamos el id del alumno seleccionado
+            ObjectId idAlumno = alumnoSeleccionado.getId();
+            System.out.println("ID del alumno seleccionado: " + idAlumno.toHexString());
+            return alumnoSeleccionado;
+        }
+        return null;
+    }
+
     private void mostrarAlumnosEnTabla() {
         DefaultTableModel modelo = (DefaultTableModel) tblAlumnos.getModel();
         limpiarTabla(modelo); // Limpia la tabla antes de agregar nuevos datos
@@ -1292,7 +1305,7 @@ public class menuPrincipal extends javax.swing.JFrame {
                 txtNombreLibro.setText(libro.getTitulo());
 
                 // Crear un objeto Prestamo con los datos obtenidos
-                Prestamo prestamo = new Prestamo(null, alumno.getId().toString(), libro.getId().toString(), new Date(), null);
+                Prestamo prestamo = new Prestamo(null, alumno.getId(), libro.getId(), new Date(), null);
 
                 // Realizar el préstamo
                 boolean prestado = prestamoDAO.nuevoPrestamo(prestamo);
@@ -1397,9 +1410,7 @@ public class menuPrincipal extends javax.swing.JFrame {
 
     private void btnBorrarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarUsuarioActionPerformed
         // TODO add your handling code here:
-        eliminarUsuario objEliminarUsuario = new eliminarUsuario();
-        objEliminarUsuario.setVisible(true);
-        objEliminarUsuario.setLocationRelativeTo(null);
+        
     }//GEN-LAST:event_btnBorrarUsuarioActionPerformed
 
     private void btnEditarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarUsuarioActionPerformed
@@ -1419,9 +1430,7 @@ public class menuPrincipal extends javax.swing.JFrame {
 
     private void btnBorrarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarLibroActionPerformed
         // TODO add your handling code here:
-        eliminarLibro objEliminarLibro = new eliminarLibro();
-        objEliminarLibro.setVisible(true);
-        objEliminarLibro.setLocationRelativeTo(null);
+        
     }//GEN-LAST:event_btnBorrarLibroActionPerformed
 
     private void btnEditarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarLibroActionPerformed
@@ -1443,7 +1452,7 @@ public class menuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_txtBuscarAlumnosActionPerformed
 
     private void btnBuscarAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarAlumnosActionPerformed
-        // TODO add your handling code here:
+        mostrarAlumnosEnTabla();
     }//GEN-LAST:event_btnBuscarAlumnosActionPerformed
 
     private void btnAgregarAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarAlumnoActionPerformed
@@ -1458,13 +1467,12 @@ public class menuPrincipal extends javax.swing.JFrame {
         editarAlumno objEditarAlumno = new editarAlumno();
         objEditarAlumno.setVisible(true);
         objEditarAlumno.setLocationRelativeTo(null);
+        objEditarAlumno.setAlumno(seleccionarId());
     }//GEN-LAST:event_btnEditarAlumnoActionPerformed
 
     private void btnBorrarAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarAlumnoActionPerformed
-        // TODO add your handling code here:
-        eliminarAlumno objEliminarAlumno = new eliminarAlumno();
-        objEliminarAlumno.setVisible(true);
-        objEliminarAlumno.setLocationRelativeTo(null);
+        Alumno elimAlumno = seleccionarId();
+        alumnoDAO.eliminarAlumno(elimAlumno.getId());
     }//GEN-LAST:event_btnBorrarAlumnoActionPerformed
 
     private void tblAlumnosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblAlumnosMouseClicked

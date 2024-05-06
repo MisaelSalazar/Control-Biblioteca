@@ -7,6 +7,7 @@ package control.biblioteca.interfaces;
 
 import control.biblioteca.model.Alumno;
 import java.util.List;
+import org.bson.types.ObjectId;
 
 /**
  *
@@ -14,5 +15,8 @@ import java.util.List;
  */
 public interface DAOAlumnos {
     List<Alumno> obtenerAlumnos ();
-    Alumno buscarAlumnoPorNumeroControl(String numControl);
+    Alumno buscarAlumnoPorNumeroControl (String numControl);
+    boolean insertarAlumno (Alumno alumno);
+    void actualizarAlumno (Alumno alumno);
+    boolean eliminarAlumno (ObjectId id);
 }

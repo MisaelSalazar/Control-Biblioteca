@@ -165,17 +165,18 @@ public class nuevaCuenta extends javax.swing.JFrame {
 
     private void btnAccederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccederActionPerformed
         try {
-            if ("".equals(txtUserName.getText()) || "".equals(txtUserPassword1.getText()) || "".equals(txtUserPassword2.getText())) {
+            // Obtenemos las credenciales del usuario
+            String usuario = txtUserName.getText().trim();
+            String contra1 = txtUserPassword1.getText().trim();
+            String contra2 = txtUserPassword2.getText().trim();
+            // Comprobamos que los campos no esten vacios
+            if ("".equals(usuario) || "".equals(contra1) || "".equals(contra2)) {
                 msj.MensajeError("Rellena todos los campos", "Iniciar Sesión");
             } else {
                 // Comparar si las cotrasenas ingresadas son iguales
-                if (txtUserPassword1.getText().equals(txtUserPassword2.getText())) {
-                    // Encriptar la contrasena
-                    String contraEncrip = Encriptar.encriptarContrasena(txtUserPassword1.getText());
-                    // Instanciar un nuevo usuario
-                    Usuario usuario = new Usuario(txtUserName.getText(), contraEncrip);
-                    // Llamar al metodo guardarUsuario (registrar)
-                    usuarioDAO.registrarUsuario(usuario);
+                if (contra1.equals(contra2)) {
+                    // Llamar al metodo registrarUsuario
+                    usuarioDAO.registrarUsuario(usuario, contra1);
                     msj.MensajeExitoso("Cuenta creada con éxito", "Iniciar Sesión");
                 } else {
                     msj.MensajeError("Las contraseñas no coinciden", "Iniciar Sesión");
@@ -184,6 +185,7 @@ public class nuevaCuenta extends javax.swing.JFrame {
         } catch (Exception e) {
             msj.MensajeError("Error de creación de cuenta: " + e, "Iniciar Sesión");
         }
+
     }//GEN-LAST:event_btnAccederActionPerformed
 
     /**

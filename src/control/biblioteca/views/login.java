@@ -18,6 +18,7 @@ public class login extends javax.swing.JFrame {
 
     private DAOUsuarioImpl usuarioDAO;
     private Mensajes msj = new Mensajes();
+
     public login() {
         super("Control Biblioteca");
         usuarioDAO = new DAOUsuarioImpl();
@@ -199,13 +200,15 @@ public class login extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUserPasswordActionPerformed
 
     private void btnAccederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAccederActionPerformed
-        if ("".equals(txtUserName.getText()) || "".equals(txtUserPassword.getText())) {
+        // Obtener los datos de los JTextField
+        String usuario = txtUserName.getText().trim();
+        String contrasena = txtUserPassword.getText().trim();
+        // Verificar que los campos no esten vacios
+        if ("".equals(usuario) || "".equals(contrasena)) {
             msj.MensajeError("Rellena todos los campos", "Iniciar Sesión");
         } else {
-            // Instanciar un nuevo usuario
-            Usuario usuario = new Usuario(txtUserName.getText(), txtUserPassword.getText());
             // Almacenar el valor V/F que retorna al validar las credenciales del usuario
-            boolean inicio = usuarioDAO.validarCredenciales(usuario);
+            boolean inicio = usuarioDAO.validarCredenciales(usuario, contrasena);
             // Si las credenciales son correctas, entonces accede
             if (inicio == true) {
                 System.out.println("*Accede al Panel Principal*");
@@ -213,7 +216,10 @@ public class login extends javax.swing.JFrame {
                 System.out.println("*Mensaje de Error*");
             }
         }
-        menuPrincipal obj = new menuPrincipal(); obj.setVisible(true); obj.setLocationRelativeTo(null);
+        menuPrincipal obj = new menuPrincipal();
+        obj.setVisible(true);
+        obj.setLocationRelativeTo(null);
+
     }//GEN-LAST:event_btnAccederActionPerformed
 
     private void btnNuevaCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaCuentaActionPerformed

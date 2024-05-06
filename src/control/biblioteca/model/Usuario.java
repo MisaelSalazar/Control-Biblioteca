@@ -4,18 +4,30 @@
  */
 package control.biblioteca.model;
 
+import org.bson.types.ObjectId;
+
 /**
  *
  * @author patinho
  */
 public class Usuario {
 
+    private ObjectId id;
     private String nombreUsuario;
     private String contrasena;
 
-    public Usuario(String nombreUsuario, String contrasena) {
+    public Usuario(ObjectId id, String nombreUsuario, String contrasena) {
+        this.id = id;
         this.nombreUsuario = nombreUsuario;
         this.contrasena = contrasena;
+    }
+
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
     }
 
     public String getNombreUsuario() {

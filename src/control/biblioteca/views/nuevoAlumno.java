@@ -4,23 +4,30 @@
  */
 package control.biblioteca.views;
 
+import control.biblioteca.controlador.Mensajes;
 import control.biblioteca.controlador.TextPrompt;
+import control.biblioteca.dao.DAOAlumnoImpl;
 import control.biblioteca.dao.DAOUsuarioImpl;
+import control.biblioteca.model.Alumno;
 
 /**
  *
- * @author Misae
+ * @author Patinho
  */
 public class nuevoAlumno extends javax.swing.JFrame {
+
+    private final Mensajes msj;
+    private DAOAlumnoImpl alumnoDAO;
 
     /**
      * Creates new form nuevoAlumno
      */
     public nuevoAlumno() {
         super("Control Biblioteca");
-        
+        msj = new Mensajes();
+        alumnoDAO = new DAOAlumnoImpl();
         initComponents();
-        
+
         TextPrompt placeholder = new TextPrompt("Ingrese el nombre", txtNombreAlumno);
         placeholder = new TextPrompt("Ingrese los apellidos", txtApellidosAlumno);
         placeholder = new TextPrompt("Ingrese el Num. Control", txtNumControl);
@@ -42,10 +49,10 @@ public class nuevoAlumno extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         txtNombreAlumno = new javax.swing.JTextField();
         btnAgregarAlumno = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jcbSemestre = new javax.swing.JComboBox<>();
         txtApellidosAlumno = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        jcbCarrera = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
         txtNumControl = new javax.swing.JTextField();
 
@@ -70,11 +77,6 @@ public class nuevoAlumno extends javax.swing.JFrame {
         txtNombreAlumno.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         txtNombreAlumno.setToolTipText("");
         txtNombreAlumno.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 15, 5, 5));
-        txtNombreAlumno.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNombreAlumnoActionPerformed(evt);
-            }
-        });
 
         btnAgregarAlumno.setBackground(new java.awt.Color(93, 156, 236));
         btnAgregarAlumno.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -87,9 +89,9 @@ public class nuevoAlumno extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setBackground(new java.awt.Color(204, 204, 204));
-        jComboBox1.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" }));
+        jcbSemestre.setBackground(new java.awt.Color(204, 204, 204));
+        jcbSemestre.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        jcbSemestre.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" }));
 
         txtApellidosAlumno.setBackground(new java.awt.Color(204, 204, 204));
         txtApellidosAlumno.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -104,12 +106,12 @@ public class nuevoAlumno extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel6.setText("Apellidos");
 
-        jComboBox2.setBackground(new java.awt.Color(204, 204, 204));
-        jComboBox2.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione una opción", "Ing. Industrial", "Ing. Sistemas Computacionales" }));
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+        jcbCarrera.setBackground(new java.awt.Color(204, 204, 204));
+        jcbCarrera.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        jcbCarrera.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione una opción", "Ing. Industrial", "Ing. Sistemas Computacionales" }));
+        jcbCarrera.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
+                jcbCarreraActionPerformed(evt);
             }
         });
 
@@ -139,8 +141,8 @@ public class nuevoAlumno extends javax.swing.JFrame {
                 .addGap(46, 46, 46)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(txtNombreAlumno, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.Alignment.LEADING, 0, 188, Short.MAX_VALUE))
+                    .addComponent(jcbSemestre, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jcbCarrera, javax.swing.GroupLayout.Alignment.LEADING, 0, 188, Short.MAX_VALUE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
@@ -183,12 +185,12 @@ public class nuevoAlumno extends javax.swing.JFrame {
                             .addComponent(txtNumControl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jcbCarrera, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(25, 25, 25)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel4)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jcbSemestre, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(15, 15, 15)
                         .addComponent(btnAgregarAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -211,12 +213,32 @@ public class nuevoAlumno extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtNombreAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreAlumnoActionPerformed
-
-    }//GEN-LAST:event_txtNombreAlumnoActionPerformed
-
     private void btnAgregarAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarAlumnoActionPerformed
-        
+        // Obtenemos los datos de los JTextField
+        String nombre = txtNombreAlumno.getText().trim();
+        String apellidos = txtApellidosAlumno.getText().trim();
+        String numCtrl = txtNumControl.getText().trim();
+        String carrera = jcbCarrera.getSelectedItem().toString();
+        String semestre = jcbSemestre.getSelectedItem().toString();
+
+        // Verificamos que los campos no esten vacios, y si lo estan aparece un msj
+        if (nombre.isEmpty() || apellidos.isEmpty() || carrera.isEmpty() || semestre.isEmpty()) {
+            msj.MensajeError("Por favor, Rellena todos los campos", "Datos Incompletos");
+        } else {
+            // Si no entonces, instanciamos un nuevo alumno
+            Alumno alumno = new Alumno(null, numCtrl, nombre, apellidos, carrera, semestre);
+
+            // Mandamos los datos del alumno a insertarAlumno
+            boolean insertado = alumnoDAO.insertarAlumno(alumno);
+
+            // Si insertado (true) entonces msj de exito
+            if (insertado) {
+                msj.MensajeExitoso("El alumno ha sido registrado correctamente", "Registro de Alumno");
+            } else {
+                msj.MensajeError("Error al registrar el alumno", "Registro de Alumno");
+            }
+        }
+
     }//GEN-LAST:event_btnAgregarAlumnoActionPerformed
 
     private void txtApellidosAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtApellidosAlumnoActionPerformed
@@ -227,9 +249,9 @@ public class nuevoAlumno extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNumControlActionPerformed
 
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+    private void jcbCarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbCarreraActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ActionPerformed
+    }//GEN-LAST:event_jcbCarreraActionPerformed
 
     /**
      * @param args the command line arguments
@@ -268,8 +290,6 @@ public class nuevoAlumno extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarAlumno;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -277,6 +297,8 @@ public class nuevoAlumno extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JComboBox<String> jcbCarrera;
+    private javax.swing.JComboBox<String> jcbSemestre;
     private javax.swing.JTextField txtApellidosAlumno;
     private javax.swing.JTextField txtNombreAlumno;
     private javax.swing.JTextField txtNumControl;

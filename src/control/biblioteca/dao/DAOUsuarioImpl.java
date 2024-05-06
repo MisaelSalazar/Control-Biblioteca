@@ -13,6 +13,7 @@ import control.biblioteca.controlador.Mensajes;
 import control.biblioteca.interfaces.DAOUsuario;
 import control.biblioteca.model.Usuario;
 import control.biblioteca.model.conexion;
+import org.bson.types.ObjectId;
 
 /**
  *
@@ -23,18 +24,17 @@ public class DAOUsuarioImpl extends conexion implements DAOUsuario {
     private final Mensajes msj = new Mensajes();
 
     @Override
-    public void registrarUsuario(Usuario usuario) {
+    public void registrarUsuario(String usuario, String contrasena) {
         try {
-            // Obtener datos del registro
-            String nombreUsuario = usuario.getNombreUsuario();
-            String contrasena = usuario.getContrasena();
+            // Encriptar la contrasena
+            String contraEncrip = Encriptar.encriptarContrasena(contrasena);
             // Conectarse a la BD y obtener la coleccion USUARIOS
             DB db = this.Conexion().getDB("biblioteca");
             DBCollection usuarios = db.getCollection("usuarios");
             // Preparar consulta de registro (insercion)
             BasicDBObject consulta = new BasicDBObject();
-            consulta.put("nombreUsuario", nombreUsuario);
-            consulta.put("contrasena", contrasena);
+            consulta.put("nombreUsuario", usuario);
+            consulta.put("contrasena", contraEncrip);
             // Ejecutar la consulta (registro del usuario)
             usuarios.insert(consulta);
             msj.MensajeExitoso("Usuario registrado exitosamente", "Registrar Usuario");
@@ -80,7 +80,7 @@ public class DAOUsuarioImpl extends conexion implements DAOUsuario {
             // Si encontró un usuario entonces...
             if (usuarioEncontrado != null) {
                 // Retorna al Usuario (contrasena)
-                return new Usuario((String) usuarioEncontrado.get("nombreUsuario"), (String) usuarioEncontrado.get("contrasena"));
+                return new Usuario((ObjectId) usuarioEncontrado.get("_id"), (String) usuarioEncontrado.get("nombreUsuario"), (String) usuarioEncontrado.get("contrasena"));
             } else {
                 msj.MensajeError("Usuario no encontrado", "Buscar Usuario");
                 return null;
@@ -92,19 +92,19 @@ public class DAOUsuarioImpl extends conexion implements DAOUsuario {
     }
 
     @Override
-    public boolean validarCredenciales(Usuario usuario) {
+    public boolean validarCredenciales(String usuario, String contrasena) {
         try {
             // Encriptar la contrasena ingresada
-            String hashedPassword = Encriptar.encriptarContrasena(usuario.getContrasena());
+            String hashedPassword = Encriptar.encriptarContrasena(contrasena);
             // Conectarse a la BD y obtener la coleccion USUARIOS
             DB db = this.Conexion().getDB("biblioteca");
             DBCollection usuarios = db.getCollection("usuarios");
             // Preparar consulta para encontrar al usuario en la BD
-            BasicDBObject consulta = new BasicDBObject("nombreUsuario", usuario.getNombreUsuario());
+            BasicDBObject consulta = new BasicDBObject("nombreUsuario", usuario);
             DBObject usuarioEncontrado = usuarios.findOne(consulta);
             // Si se encontró un usuario y la contrasena ingresada es igual a la que esta en la BD entonces...
             if (usuarioEncontrado != null && hashedPassword.equals(usuarioEncontrado.get("contrasena"))) {
-                msj.MensajeExitoso("Inicio de sesión exitoso. Bienvenido " + usuario.getNombreUsuario(), "Inicio Exitoso");
+                msj.MensajeExitoso("Inicio de sesión exitoso. Bienvenido " + usuario, "Inicio Exitoso");
                 return true;
             } else {
                 msj.MensajeError("Usuario o contraseña incorrectos", "Inicio Fallido");
@@ -115,5 +115,4 @@ public class DAOUsuarioImpl extends conexion implements DAOUsuario {
             return false;
         }
     }
-
 }

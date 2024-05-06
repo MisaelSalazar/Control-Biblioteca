@@ -11,8 +11,8 @@ import control.biblioteca.model.Usuario;
  * @author patinho
  */
 public interface DAOUsuario {
-    void registrarUsuario(Usuario usuario);
+    void registrarUsuario(String usuario, String contrasena);
     void actualizarUsuario(Usuario usuario);
     Usuario buscarUsuarioPorNombre(String nombreUsuario);
-    boolean validarCredenciales(Usuario usuario);
+    boolean validarCredenciales(String usuario, String contrasena);
 }

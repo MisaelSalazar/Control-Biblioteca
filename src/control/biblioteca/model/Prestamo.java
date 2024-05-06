@@ -14,12 +14,12 @@ import org.bson.types.ObjectId;
 public class Prestamo {
 
     private ObjectId id;
-    private String alumno_id;
-    private String libro_id;
+    private ObjectId alumno_id;
+    private ObjectId libro_id;
     private Date fecha_prestamo;
     private Date fecha_devolucion;
 
-    public Prestamo(ObjectId id, String alumno_id, String libro_id, Date fecha_prestamo, Date fecha_devolucion) {
+    public Prestamo(ObjectId id, ObjectId alumno_id, ObjectId libro_id, Date fecha_prestamo, Date fecha_devolucion) {
         this.id = id;
         this.alumno_id = alumno_id;
         this.libro_id = libro_id;
@@ -35,19 +35,19 @@ public class Prestamo {
         this.id = id;
     }
 
-    public String getAlumno_id() {
+    public ObjectId getAlumno_id() {
         return alumno_id;
     }
 
-    public void setAlumno_id(String alumno_id) {
+    public void setAlumno_id(ObjectId alumno_id) {
         this.alumno_id = alumno_id;
     }
 
-    public String getLibro_id() {
+    public ObjectId getLibro_id() {
         return libro_id;
     }
 
-    public void setLibro_id(String libro_id) {
+    public void setLibro_id(ObjectId libro_id) {
         this.libro_id = libro_id;
     }
 
