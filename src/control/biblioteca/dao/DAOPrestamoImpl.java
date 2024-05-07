@@ -128,6 +128,7 @@ public class DAOPrestamoImpl extends conexion implements DAOPrestamos {
     @Override
     public boolean realizarDevolucion(ObjectId alumno_id, ObjectId libro_id) {
         try {
+            // Conectarse a la BD
             DB db = this.Conexion().getDB("biblioteca");
             DBCollection prestamos = db.getCollection("prestamos");
 
@@ -135,7 +136,7 @@ public class DAOPrestamoImpl extends conexion implements DAOPrestamos {
             System.out.println("Alumno ID: " + alumno_id);
             System.out.println("Libro ID: " + libro_id);
 
-            // Construir la consulta para buscar el préstamo
+            // Preparar consulta para buscar el préstamo
             BasicDBObject consultaBuscar = new BasicDBObject();
             consultaBuscar.put("alumno_id", alumno_id);
             consultaBuscar.put("libro_id", libro_id);
@@ -143,10 +144,12 @@ public class DAOPrestamoImpl extends conexion implements DAOPrestamos {
             // Realizar la búsqueda del préstamo
             DBCursor cursor = prestamos.find(consultaBuscar);
             if (cursor.hasNext()) {
+                // Objecto para almacenar el documento de prestamo
                 DBObject prestamoDBObject = cursor.next();
+                // Almacenar id del prestamo
                 ObjectId id = (ObjectId) prestamoDBObject.get("_id");
 
-                // Actualizar la fecha de devolución
+                // Consulta para actualizar la fecha de devolución
                 BasicDBObject consultaActualizar = new BasicDBObject();
                 consultaActualizar.put("$set", new BasicDBObject("fecha_devolucion", new Date()));
 

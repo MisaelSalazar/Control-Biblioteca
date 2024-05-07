@@ -1139,7 +1139,7 @@ public class menuPrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private Alumno seleccionarId() {
+    private Alumno seleccionarIdAlumno() {
         // Seleccionar fila
         int filaSeleccionada = tblAlumnos.getSelectedRow();
         // Si se ha seleccionado una fila entonces
@@ -1150,6 +1150,22 @@ public class menuPrincipal extends javax.swing.JFrame {
             ObjectId idAlumno = alumnoSeleccionado.getId();
             System.out.println("ID del alumno seleccionado: " + idAlumno.toHexString());
             return alumnoSeleccionado;
+        }
+        return null;
+    }
+
+    private Libro seleccionarIdLibro() {
+        // Seleccionar fila
+        int filaSeleccionada = tblLibros.getSelectedRow();
+        // Si se ha seleccionado una fila entonces...
+        if (filaSeleccionada != -1) {
+            // Obtener el objeto Libro correspondiente a la fila seleccionada
+            Libro libroSeleccionado = libroDAO.obtenerLibros().get(filaSeleccionada);
+            // Almacenamos el id del Libro seleccionado y lo imprimimos (Depurar)
+            ObjectId idAlumno = libroSeleccionado.getId();
+            System.out.println("ID del alumno seleccionado: " + idAlumno.toHexString());
+            // Devuelve el libro seleccionado
+            return libroSeleccionado;
         }
         return null;
     }
@@ -1410,7 +1426,7 @@ public class menuPrincipal extends javax.swing.JFrame {
 
     private void btnBorrarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarUsuarioActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_btnBorrarUsuarioActionPerformed
 
     private void btnEditarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarUsuarioActionPerformed
@@ -1425,12 +1441,12 @@ public class menuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_txtBuscarLibroActionPerformed
 
     private void btnBuscarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarLibroActionPerformed
-        // TODO add your handling code here:
+        mostrarLibrosEnTabla();
     }//GEN-LAST:event_btnBuscarLibroActionPerformed
 
     private void btnBorrarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarLibroActionPerformed
-        // TODO add your handling code here:
-        
+        Libro elimLibro = seleccionarIdLibro();
+        libroDAO.eliminarLibro(elimLibro.getId());
     }//GEN-LAST:event_btnBorrarLibroActionPerformed
 
     private void btnEditarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarLibroActionPerformed
@@ -1438,6 +1454,7 @@ public class menuPrincipal extends javax.swing.JFrame {
         editarLibro objEditarLibro = new editarLibro();
         objEditarLibro.setVisible(true);
         objEditarLibro.setLocationRelativeTo(null);
+        objEditarLibro.setLibro(seleccionarIdLibro());
     }//GEN-LAST:event_btnEditarLibroActionPerformed
 
     private void btnAgregarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarLibroActionPerformed
@@ -1467,11 +1484,11 @@ public class menuPrincipal extends javax.swing.JFrame {
         editarAlumno objEditarAlumno = new editarAlumno();
         objEditarAlumno.setVisible(true);
         objEditarAlumno.setLocationRelativeTo(null);
-        objEditarAlumno.setAlumno(seleccionarId());
+        objEditarAlumno.setAlumno(seleccionarIdAlumno());
     }//GEN-LAST:event_btnEditarAlumnoActionPerformed
 
     private void btnBorrarAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarAlumnoActionPerformed
-        Alumno elimAlumno = seleccionarId();
+        Alumno elimAlumno = seleccionarIdAlumno();
         alumnoDAO.eliminarAlumno(elimAlumno.getId());
     }//GEN-LAST:event_btnBorrarAlumnoActionPerformed
 

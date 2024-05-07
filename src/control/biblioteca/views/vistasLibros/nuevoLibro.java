@@ -4,9 +4,12 @@
  */
 package control.biblioteca.views.vistasLibros;
 
+import control.biblioteca.controlador.Mensajes;
 import control.biblioteca.views.*;
 import control.biblioteca.controlador.TextPrompt;
+import control.biblioteca.dao.DAOLibroImpl;
 import control.biblioteca.dao.DAOUsuarioImpl;
+import control.biblioteca.model.Libro;
 
 /**
  *
@@ -14,14 +17,15 @@ import control.biblioteca.dao.DAOUsuarioImpl;
  */
 public class nuevoLibro extends javax.swing.JFrame {
 
-    /**
-     * Creates new form nuevoAlumno
-     */
+    private final Mensajes msj;
+    private DAOLibroImpl libroDAO;
+
     public nuevoLibro() {
         super("Control Biblioteca");
-        
+        msj = new Mensajes();
+        libroDAO = new DAOLibroImpl();
         initComponents();
-        
+
         TextPrompt placeholder = new TextPrompt("Ingrese el titulo del libro", txtTituloLibro);
         placeholder = new TextPrompt("Ingrese la editorial", txtEditorialLibro);
         placeholder = new TextPrompt("Ingrese el Num. de adquisicion", txtAdquisicionLibro);
@@ -197,7 +201,29 @@ public class nuevoLibro extends javax.swing.JFrame {
     }//GEN-LAST:event_txtTituloLibroActionPerformed
 
     private void btnAgregarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarLibroActionPerformed
-        
+        // Obtenemos los datos de los JTextField
+//        String titulo = txtTituloLibro.getText().trim();
+//        String editorial = txtEditorialLibro.getText().trim();
+//        String paginas = txtPaginasLibro.getText().trim();
+//        String adquisicion = txtAdquisicionLibro.getText().trim();
+//
+//        // Verificamos que los campos no esten vacios, y si lo estan aparece un msj
+//        if (titulo.isEmpty() || editorial.isEmpty() || paginas.isEmpty() || adquisicion.isEmpty()) {
+//            msj.MensajeError("Por favor, Rellena todos los campos", "Datos Incompletos");
+//        } else {
+//            // Si no entonces, instanciamos un nuevo alumno
+//            Libro libro = new Libro(null, adquisicion, titulo, apellidos, editorial, ano, paginas, isbn);
+//
+//            // Mandamos los datos del alumno a insertarAlumno
+//            boolean insertado = libroDAO.registrarLibro(libro);
+//
+//            // Si insertado (true) entonces msj de exito
+//            if (insertado) {
+//                msj.MensajeExitoso("El alumno ha sido registrado correctamente", "Registro de Alumno");
+//            } else {
+//                msj.MensajeError("Error al registrar el alumno", "Registro de Alumno");
+//            }
+//        }
     }//GEN-LAST:event_btnAgregarLibroActionPerformed
 
     private void txtEditorialLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEditorialLibroActionPerformed

@@ -6,15 +6,16 @@ package control.biblioteca.interfaces;
 
 import control.biblioteca.model.Libro;
 import java.util.List;
+import org.bson.types.ObjectId;
 
 /**
  *
  * @author patinho
  */
 public interface DAOLibros {
-    void registrarLibro(Libro libro);
+    boolean registrarLibro(Libro libro);
     void actualizarLibro(Libro libro);
-    void eliminarLibro(String identificador);
+    boolean eliminarLibro(ObjectId id);
     List<Libro> obtenerLibros();
     Libro buscarLibroPorIdentificador(String identificador);
 }
