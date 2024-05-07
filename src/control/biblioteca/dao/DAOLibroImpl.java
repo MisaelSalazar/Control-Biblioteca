@@ -135,7 +135,6 @@ public class DAOLibroImpl extends conexion implements DAOLibros {
                         return true;
                     }
                 } else {
-                    msj.MensajeError("No se pudo eliminar el libro con el identificador " + identificador, "Eliminar Libro");
                     return false;
                 }
             } else {

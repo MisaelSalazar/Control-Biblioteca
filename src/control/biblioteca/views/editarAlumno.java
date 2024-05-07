@@ -4,9 +4,9 @@
  */
 package control.biblioteca.views;
 
+import control.biblioteca.controlador.Mensajes;
 import control.biblioteca.controlador.TextPrompt;
 import control.biblioteca.dao.DAOAlumnoImpl;
-import control.biblioteca.dao.DAOUsuarioImpl;
 import control.biblioteca.model.Alumno;
 
 /**
@@ -17,10 +17,12 @@ public class editarAlumno extends javax.swing.JFrame {
 
     private Alumno alumno;
     private DAOAlumnoImpl alumnoDAO;
+    private Mensajes msj;
 
     public editarAlumno() {
         super("Control Biblioteca");
         initComponents();
+        msj = new Mensajes();
         alumnoDAO = new DAOAlumnoImpl();
         TextPrompt placeholder = new TextPrompt("Ingrese el nombre", txtNombreAlumno);
         placeholder = new TextPrompt("Ingrese los apellidos", txtApellidosAlumno);
@@ -228,16 +230,20 @@ public class editarAlumno extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNombreAlumnoActionPerformed
 
     private void btnActualizarAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarAlumnoActionPerformed
-        Alumno alumnoAct = new Alumno(
-                alumno.getId(),
-                txtNumControl.getText().trim(),
-                txtNombreAlumno.getText().trim(),
-                txtApellidosAlumno.getText().trim(),
-                jcbCarrera.getSelectedItem().toString(),
-                jcbSemestre.getSelectedItem().toString());
+        if (txtNumControl.getText().trim().equals("") || txtNombreAlumno.getText().trim().equals("")
+                || txtApellidosAlumno.getText().trim().equals("")) {
+            msj.MensajeError("Por favor, rellena todos los campos", "Actualizar Alumno");
+        } else {
+            Alumno alumnoAct = new Alumno(
+                    alumno.getId(),
+                    txtNumControl.getText().trim(),
+                    txtNombreAlumno.getText().trim(),
+                    txtApellidosAlumno.getText().trim(),
+                    jcbCarrera.getSelectedItem().toString(),
+                    jcbSemestre.getSelectedItem().toString());
 
-        alumnoDAO.actualizarAlumno(alumnoAct);
-
+            alumnoDAO.actualizarAlumno(alumnoAct);
+        }
     }//GEN-LAST:event_btnActualizarAlumnoActionPerformed
 
     private void txtApellidosAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtApellidosAlumnoActionPerformed

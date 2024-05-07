@@ -5,6 +5,8 @@
 package control.biblioteca.interfaces;
 
 import control.biblioteca.model.Usuario;
+import java.util.List;
+import org.bson.types.ObjectId;
 
 /**
  *
@@ -13,6 +15,8 @@ import control.biblioteca.model.Usuario;
 public interface DAOUsuario {
     void registrarUsuario(String usuario, String contrasena);
     void actualizarUsuario(Usuario usuario);
+    boolean eliminarUsuario(ObjectId id);
     Usuario buscarUsuarioPorNombre(String nombreUsuario);
     boolean validarCredenciales(String usuario, String contrasena);
+    List<Usuario> obtenerUsuarios();
 }

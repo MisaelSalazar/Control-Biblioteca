@@ -7,12 +7,16 @@ package control.biblioteca.dao;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.WriteResult;
 import control.biblioteca.controlador.Encriptar;
 import control.biblioteca.controlador.Mensajes;
 import control.biblioteca.interfaces.DAOUsuario;
 import control.biblioteca.model.Usuario;
 import control.biblioteca.model.conexion;
+import java.util.ArrayList;
+import java.util.List;
 import org.bson.types.ObjectId;
 
 /**
@@ -50,13 +54,15 @@ public class DAOUsuarioImpl extends conexion implements DAOUsuario {
             DB db = this.Conexion().getDB("biblioteca");
             DBCollection usuarios = db.getCollection("usuarios");
             // Preparar consulta para encontrar al usuario en la BD
-            BasicDBObject consulta = new BasicDBObject("nombreUsuario", usuario.getNombreUsuario());
+            BasicDBObject consulta = new BasicDBObject("_id", usuario.getId());
             DBObject usuarioEncontrado = usuarios.findOne(consulta);
             // Si encontró un usuario entonces...
             if (usuarioEncontrado != null) {
+                // Encriptar la contrasena
+                String contraEncrip = Encriptar.encriptarContrasena(usuario.getContrasena());
                 // Prepara la consulta para actualizar los datos del usuario (contrasena)
                 DBObject usuarioActualizado = new BasicDBObject("nombreUsuario", usuario.getNombreUsuario())
-                        .append("contrasena", usuario.getContrasena());
+                        .append("contrasena", contraEncrip);
                 // Actualizar los datos del usuario (contrasena)
                 usuarios.update(consulta, usuarioActualizado);
                 msj.MensajeExitoso("Usuario Actualizado Correctamente", "Actualizar Usuario");
@@ -66,6 +72,46 @@ public class DAOUsuarioImpl extends conexion implements DAOUsuario {
         } catch (Exception e) {
             msj.MensajeError("Error al actualizar el usuario \n" + e.getMessage(), "Actualizar Usuario");
         }
+    }
+
+    @Override
+    public boolean eliminarUsuario(ObjectId id) {
+        try {
+            // Conectarse a la BD
+            DB db = this.Conexion().getDB("biblioteca");
+            DBCollection usuariosColec = db.getCollection("usuarios");
+
+            // Preparar consulta para encontrar el Usuario
+            BasicDBObject encontrar = new BasicDBObject("_id", id);
+            DBObject usuarioEncontrado = usuariosColec.findOne(encontrar);
+            // Si el usuario se encontro entonces...
+            if (usuarioEncontrado != null) {
+                // Almacenamos la variable del identificador
+                String nombreUsuario = (String) usuarioEncontrado.get("nombreUsuario");
+                // Eliminamos el usuario de la base de datos
+                boolean eliminar = msj.MensajeConfirmar("Estas seguro que deseas eliminar al usuario " + nombreUsuario + "?, \n"
+                        + "Esta acción es irreversible.", "Eliminar Usuario");
+                if (eliminar) {
+                    // almacenamos el resultado de la eliminacion del Usuario
+                    WriteResult resultado = usuariosColec.remove(usuarioEncontrado);
+                    // Verifica que se realizo la consulta...
+                    if (resultado.getN() > 0) {
+                        // Si se realizo entonces muestra un msj de exito y retorna verdadero.
+                        msj.MensajeExitoso("El usuario " + nombreUsuario + " fue eliminado con exito", "Eliminar Usuario");
+                        return true;
+                    }
+                } else {
+                    return false;
+                }
+            } else {
+                msj.MensajeError("No se encontró ningún usuario", "Eliminar Usuario");
+                return false;
+            }
+        } catch (Exception e) {
+            msj.MensajeError("Error al intentar eliminar el usuario \n" + e.getMessage(), "Eliminar Usuario");
+            return false;
+        }
+        return false;
     }
 
     @Override
@@ -115,4 +161,31 @@ public class DAOUsuarioImpl extends conexion implements DAOUsuario {
             return false;
         }
     }
+
+    @Override
+    public List<Usuario> obtenerUsuarios() {
+        try {
+            List<Usuario> listaUsuarios = new ArrayList<>();
+            DB db = this.Conexion().getDB("biblioteca");
+            DBCollection usuariosColec = db.getCollection("usuarios");
+
+            DBCursor cursor = usuariosColec.find();
+            while (cursor.hasNext()) {
+                DBObject libroDBObject = cursor.next();
+                ObjectId id = (ObjectId) libroDBObject.get("_id");
+                String nombreUsuario = (String) libroDBObject.get("nombreUsuario");
+                String contrasena = (String) libroDBObject.get("contrasena");
+                Usuario usuario = new Usuario(id, nombreUsuario, contrasena);
+
+                listaUsuarios.add(usuario);
+            }
+            if (listaUsuarios != null) {
+                return listaUsuarios;
+            }
+        } catch (Exception e) {
+            return null;
+        }
+        return null;
+    }
+
 }

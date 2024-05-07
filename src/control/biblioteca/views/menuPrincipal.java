@@ -6,6 +6,7 @@ package control.biblioteca.views;
 
 import control.biblioteca.controlador.FiltrarAlumnos;
 import control.biblioteca.controlador.FiltrarLibros;
+import control.biblioteca.controlador.FiltrarUsuarios;
 import control.biblioteca.controlador.Mensajes;
 import control.biblioteca.controlador.TextPrompt;
 import control.biblioteca.dao.DAOAlumnoImpl;
@@ -15,6 +16,7 @@ import control.biblioteca.dao.DAOUsuarioImpl;
 import control.biblioteca.model.Alumno;
 import control.biblioteca.model.Libro;
 import control.biblioteca.model.Prestamo;
+import control.biblioteca.model.Usuario;
 import control.biblioteca.views.vistasLibros.editarLibro;
 import control.biblioteca.views.vistasLibros.nuevoLibro;
 import control.biblioteca.views.vistasUsuarios.editarUsuario;
@@ -41,6 +43,7 @@ public class menuPrincipal extends javax.swing.JFrame {
     private Mensajes msj = new Mensajes();
     private FiltrarLibros filtroLibros;
     private FiltrarAlumnos filtroalAlumnos;
+    private FiltrarUsuarios filtroUsuarios;
 
     public menuPrincipal() {
         super("Control Biblioteca");
@@ -51,8 +54,10 @@ public class menuPrincipal extends javax.swing.JFrame {
         initComponents();
         this.filtroLibros = new FiltrarLibros(libroDAO, txtBuscarLibro, tblLibros);
         this.filtroalAlumnos = new FiltrarAlumnos(alumnoDAO, txtBuscarAlumnos, tblAlumnos);
+        this.filtroUsuarios = new FiltrarUsuarios(usuarioDAO, txtBuscarUsuario, tblUsuarios);
         mostrarLibrosEnTabla();
         mostrarAlumnosEnTabla();
+        mostrarUsuariosEnTabla();
         TextPrompt placeholder = new TextPrompt("Ingrese el número de control", txtNumControl);
         placeholder = new TextPrompt("Ingresa el código del libro", txtCodigoLibro);
         placeholder = new TextPrompt("Ingrese el número de control", txtNumControlDevolucion);
@@ -1148,7 +1153,7 @@ public class menuPrincipal extends javax.swing.JFrame {
             Alumno alumnoSeleccionado = alumnoDAO.obtenerAlumnos().get(filaSeleccionada);
             // Guardamos el id del alumno seleccionado
             ObjectId idAlumno = alumnoSeleccionado.getId();
-            System.out.println("ID del alumno seleccionado: " + idAlumno.toHexString());
+            System.out.println("ID del Alumno seleccionado: " + idAlumno.toHexString());
             return alumnoSeleccionado;
         }
         return null;
@@ -1162,10 +1167,26 @@ public class menuPrincipal extends javax.swing.JFrame {
             // Obtener el objeto Libro correspondiente a la fila seleccionada
             Libro libroSeleccionado = libroDAO.obtenerLibros().get(filaSeleccionada);
             // Almacenamos el id del Libro seleccionado y lo imprimimos (Depurar)
-            ObjectId idAlumno = libroSeleccionado.getId();
-            System.out.println("ID del alumno seleccionado: " + idAlumno.toHexString());
+            ObjectId idLibro = libroSeleccionado.getId();
+            System.out.println("ID del Libro seleccionado: " + idLibro.toHexString());
             // Devuelve el libro seleccionado
             return libroSeleccionado;
+        }
+        return null;
+    }
+
+    private Usuario seleccionarIdUsuario() {
+        // Seleccionar fila
+        int filaSeleccionada = tblUsuarios.getSelectedRow();
+        // Si se ha seleccionado una fila entonces...
+        if (filaSeleccionada != -1) {
+            // Obtener el objeto Usuario correspondiente a la fila seleccionada
+            Usuario usuarioSeleccionado = usuarioDAO.obtenerUsuarios().get(filaSeleccionada);
+            // Almacenamos el id del Usuario seleccionado y lo imprimimos (Depurar)
+            ObjectId idUsuario = usuarioSeleccionado.getId();
+            System.out.println("ID del Usuario seleccionado: " + idUsuario.toHexString());
+            // Devuelve el usuario seleccionado
+            return usuarioSeleccionado;
         }
         return null;
     }
@@ -1200,6 +1221,21 @@ public class menuPrincipal extends javax.swing.JFrame {
                 libro.getEditorial(),
                 libro.getPaginas(),
                 libro.getIdentificador()
+            };
+            modelo.addRow(fila);
+        }
+    }
+
+    private void mostrarUsuariosEnTabla() {
+        DefaultTableModel modelo = (DefaultTableModel) tblUsuarios.getModel();
+        limpiarTabla(modelo);
+
+        List<Usuario> usuarios = usuarioDAO.obtenerUsuarios();
+
+        for (Usuario usuario : usuarios) {
+            Object[] fila = {
+                usuario.getId(),
+                usuario.getNombreUsuario()
             };
             modelo.addRow(fila);
         }
@@ -1414,19 +1450,18 @@ public class menuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_txtBuscarUsuarioActionPerformed
 
     private void btnAgregarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarUsuarioActionPerformed
-
         nuevoUsuario objNuevoUsuario = new nuevoUsuario();
         objNuevoUsuario.setVisible(true);
         objNuevoUsuario.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnAgregarUsuarioActionPerformed
 
     private void btnBuscar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscar1ActionPerformed
-        // TODO add your handling code here:
+        mostrarUsuariosEnTabla();
     }//GEN-LAST:event_btnBuscar1ActionPerformed
 
     private void btnBorrarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarUsuarioActionPerformed
-        // TODO add your handling code here:
-
+        Usuario elimUsuario = seleccionarIdUsuario();
+        usuarioDAO.eliminarUsuario(elimUsuario.getId());
     }//GEN-LAST:event_btnBorrarUsuarioActionPerformed
 
     private void btnEditarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarUsuarioActionPerformed
@@ -1434,6 +1469,7 @@ public class menuPrincipal extends javax.swing.JFrame {
         editarUsuario objEditarUsuario = new editarUsuario();
         objEditarUsuario.setVisible(true);
         objEditarUsuario.setLocationRelativeTo(null);
+        objEditarUsuario.setUsuario(seleccionarIdUsuario());
     }//GEN-LAST:event_btnEditarUsuarioActionPerformed
 
     private void txtBuscarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarLibroActionPerformed
