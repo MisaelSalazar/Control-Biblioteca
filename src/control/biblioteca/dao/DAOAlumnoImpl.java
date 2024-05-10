@@ -116,16 +116,9 @@ public class DAOAlumnoImpl extends conexion implements DAOAlumnos {
                 consulta.put("semestre", alumno.getSemestre());
 
                 // Insertamos el alumno
-                WriteResult resultado = alumnos.insert(consulta);
-
-                // Verificamos que el alumno se insertó en la BD
-                if (resultado.getN() > 0) {
-                    msj.MensajeExitoso("Alumno registrado exitosamente", "Registro de Alumno");
-                    return true;
-                } else {
-                    msj.MensajeError("No se realizó el registro del alumno", "Registro de Alumno");
-                    return false;
-                }
+                alumnos.insert(consulta);
+                // Retornamos TRUE
+                return true;
             } else {
                 msj.MensajeError("Los datos del alumno estan incompletos", "Registro de Alumno");
                 return false;

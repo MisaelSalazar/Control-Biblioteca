@@ -23,9 +23,9 @@ import org.bson.types.ObjectId;
  * @author patinho
  */
 public class DAOLibroImpl extends conexion implements DAOLibros {
-    
+
     private Mensajes msj = new Mensajes();
-    
+
     @Override
     public boolean registrarLibro(Libro libro) {
         try {
@@ -46,16 +46,9 @@ public class DAOLibroImpl extends conexion implements DAOLibros {
                 consulta.put("ISBN", libro.getIsbn());
 
                 // Almacenamos el resultado de la insercion
-                WriteResult resultado = libros.insert(consulta);
-                // Verificamos que se realizo una insercion en la BD
-                if (resultado.getN() > 0) {
-                    // De ser asi entonces muestra un msj de exito y retorna verdadero
-                    msj.MensajeExitoso("Libro registrado exitosamente", "Registro de Libro");
-                    return true;
-                } else {
-                    msj.MensajeError("No se realizó el registro del Libro", "Registro de Libro");
-                    return false;
-                }
+                libros.insert(consulta);
+                // Retornamos TRUE
+                return true;
             } else {
                 msj.MensajeError("Los datos del libro estan incompletos", "Registro de Libro");
                 return false;
@@ -65,7 +58,7 @@ public class DAOLibroImpl extends conexion implements DAOLibros {
             return false;
         }
     }
-    
+
     @Override
     public void actualizarLibro(Libro libro) {
         try {
@@ -107,7 +100,7 @@ public class DAOLibroImpl extends conexion implements DAOLibros {
             msj.MensajeError("Error al actualizar los datos del libro \n" + e.getMessage(), "Actualizar Libro");
         }
     }
-    
+
     @Override
     public boolean eliminarLibro(ObjectId id) {
         try {
@@ -147,16 +140,16 @@ public class DAOLibroImpl extends conexion implements DAOLibros {
         }
         return false;
     }
-    
+
     @Override
     public Libro buscarLibroPorIdentificador(String identificador) {
         try {
             DB db = this.Conexion().getDB("biblioteca");
             DBCollection libros = db.getCollection("libros");
-            
+
             BasicDBObject encontrar = new BasicDBObject("identificador", identificador);
             DBObject libroEncontrado = libros.findOne(encontrar);
-            
+
             if (libroEncontrado != null) {
                 Libro libro = new Libro();
                 libro.setId((ObjectId) libroEncontrado.get("_id"));
@@ -167,7 +160,7 @@ public class DAOLibroImpl extends conexion implements DAOLibros {
                 libro.setAnho((String) libroEncontrado.get("año"));
                 libro.setPaginas((String) libroEncontrado.get("paginas"));
                 libro.setIsbn((String) libroEncontrado.get("ISBN"));
-                
+
                 return libro;
             } else {
                 msj.MensajeError("No se encontró el libro con el identificador:\n " + identificador, "Buscar Libro");
@@ -178,14 +171,14 @@ public class DAOLibroImpl extends conexion implements DAOLibros {
         }
         return null;
     }
-    
+
     @Override
     public List<Libro> obtenerLibros() {
         List<Libro> libros = new ArrayList<>();
         try {
             DB db = this.Conexion().getDB("biblioteca");
             DBCollection librosCollection = db.getCollection("libros");
-            
+
             DBCursor cursor = librosCollection.find();
             while (cursor.hasNext()) {
                 DBObject libroDBObject = cursor.next();
@@ -198,7 +191,7 @@ public class DAOLibroImpl extends conexion implements DAOLibros {
                 libro.setAnho((String) libroDBObject.get("año"));
                 libro.setPaginas((String) libroDBObject.get("paginas"));
                 libro.setIsbn((String) libroDBObject.get("ISBN"));
-                
+
                 libros.add(libro);
             }
         } catch (Exception e) {
@@ -206,5 +199,5 @@ public class DAOLibroImpl extends conexion implements DAOLibros {
         }
         return libros;
     }
-    
+
 }
