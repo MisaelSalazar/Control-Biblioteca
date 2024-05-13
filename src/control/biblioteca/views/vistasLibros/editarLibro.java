@@ -4,6 +4,7 @@
  */
 package control.biblioteca.views.vistasLibros;
 
+import control.biblioteca.controlador.Mensajes;
 import control.biblioteca.controlador.TextPrompt;
 import control.biblioteca.dao.DAOLibroImpl;
 import control.biblioteca.model.Libro;
@@ -18,15 +19,20 @@ public class editarLibro extends javax.swing.JFrame {
 
     private Libro libro;
     private DAOLibroImpl libroDAO;
+    private Mensajes msj;
 
     public editarLibro() {
         super("Control Biblioteca");
         initComponents();
+        msj = new Mensajes();
         libroDAO = new DAOLibroImpl();
         TextPrompt placeholder = new TextPrompt("Ingrese el titulo del libro", txtTituloLibro);
-        placeholder = new TextPrompt("Ingrese la editorial", txtAutorLibro);
+        placeholder = new TextPrompt("Ingrese el autor", txtAutorLibro);
         placeholder = new TextPrompt("Ingrese el Num. de adquisicion", txtIdentificadorLibro);
-        placeholder = new TextPrompt("Ingrese el Num. de paginas", txtEditorialLibro);
+        placeholder = new TextPrompt("Ingrese el editorial", txtEditorialLibro);
+        placeholder = new TextPrompt("Ingrese el año del libro", txtAnhoLibro1);
+        placeholder = new TextPrompt("Ingrese el Num. de paginas", txtPaginaLibro1);
+        placeholder = new TextPrompt("Ingrese el Num. ISBN", txtIsbnLibro);
     }
 
     // Traer la instancia del libro seleccionado con sus datos
@@ -37,9 +43,12 @@ public class editarLibro extends javax.swing.JFrame {
 
     private void mostrarDatos() {
         txtTituloLibro.setText(libro.getTitulo());
-        txtAutorLibro.setText(libro.getEditorial());
-        txtEditorialLibro.setText(libro.getPaginas());
+        txtAutorLibro.setText(libro.getAutor());
+        txtEditorialLibro.setText(libro.getEditorial());
         txtIdentificadorLibro.setText(libro.getIdentificador());
+        txtAnhoLibro1.setText(libro.getAnho());
+        txtPaginaLibro1.setText(libro.getPaginas());
+        txtIsbnLibro.setText(libro.getIsbn());
     }
 
     @SuppressWarnings("unchecked")
@@ -51,7 +60,7 @@ public class editarLibro extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtTituloLibro = new javax.swing.JTextField();
-        btnAgregarLibro = new javax.swing.JButton();
+        btnActualizarLibro = new javax.swing.JButton();
         txtAutorLibro = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -88,14 +97,14 @@ public class editarLibro extends javax.swing.JFrame {
             }
         });
 
-        btnAgregarLibro.setBackground(new java.awt.Color(255, 206, 84));
-        btnAgregarLibro.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        btnAgregarLibro.setForeground(new java.awt.Color(0, 0, 0));
-        btnAgregarLibro.setText("Actualizar");
-        btnAgregarLibro.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 10, 5, 10));
-        btnAgregarLibro.addActionListener(new java.awt.event.ActionListener() {
+        btnActualizarLibro.setBackground(new java.awt.Color(255, 206, 84));
+        btnActualizarLibro.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnActualizarLibro.setForeground(new java.awt.Color(0, 0, 0));
+        btnActualizarLibro.setText("Actualizar");
+        btnActualizarLibro.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        btnActualizarLibro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarLibroActionPerformed(evt);
+                btnActualizarLibroActionPerformed(evt);
             }
         });
 
@@ -182,7 +191,7 @@ public class editarLibro extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(336, 336, 336)
-                        .addComponent(btnAgregarLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnActualizarLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(273, 273, 273)
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -248,7 +257,7 @@ public class editarLibro extends javax.swing.JFrame {
                     .addComponent(jLabel9)
                     .addComponent(txtIsbnLibro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnAgregarLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnActualizarLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28))
         );
 
@@ -270,31 +279,25 @@ public class editarLibro extends javax.swing.JFrame {
 
     }//GEN-LAST:event_txtTituloLibroActionPerformed
 
-    private void btnAgregarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarLibroActionPerformed
-        // Obtenemos los datos de los JTextField
-        //        String titulo = txtTituloLibro.getText().trim();
-        //        String editorial = txtEditorialLibro.getText().trim();
-        //        String paginas = txtPaginasLibro.getText().trim();
-        //        String adquisicion = txtAdquisicionLibro.getText().trim();
-        //
-        //        // Verificamos que los campos no esten vacios, y si lo estan aparece un msj
-        //        if (titulo.isEmpty() || editorial.isEmpty() || paginas.isEmpty() || adquisicion.isEmpty()) {
-            //            msj.MensajeError("Por favor, Rellena todos los campos", "Datos Incompletos");
-            //        } else {
-            //            // Si no entonces, instanciamos un nuevo alumno
-            //            Libro libro = new Libro(null, adquisicion, titulo, apellidos, edittxtAutorLibroas, isbn);
-            //
-            //            // Mandamos los datos del alumno a insertarAlumno
-            //            boolean insertado = libroDAO.registrarLibro(libro);
-            //
-            //            // Si insertado (true) entonces msj de exito
-            //            if (insertado) {
-                //                msj.MensajeExitoso("El alumno ha sido registrado correctamente", "Registro de Alumno");
-                //            } else {
-                //                msj.MensajeError("Error al registrar el alumno", "Registro de Alumno");
-                //            }
-            //        }
-    }//GEN-LAST:event_btnAgregarLibroActionPerformed
+    private void btnActualizarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarLibroActionPerformed
+        if (txtIdentificadorLibro.getText().trim().equals("") || txtTituloLibro.getText().trim().equals("")
+                || txtAutorLibro.getText().trim().equals("") || txtEditorialLibro.getText().trim().equals("") || txtAnhoLibro1.getText().trim().equals("")
+                || txtPaginaLibro1.getText().trim().equals("") || txtIsbnLibro.getText().trim().equals("")) {
+            msj.MensajeError("Por favor, rellena todos los campos", "Actualizar Libro");
+        } else {
+            Libro libroAct = new Libro(
+                    libro.getId(),
+                    txtIdentificadorLibro.getText().trim().toUpperCase(),
+                    txtTituloLibro.getText().trim(),
+                    txtAutorLibro.getText().trim(),
+                    txtEditorialLibro.getText().trim(),
+                    txtAnhoLibro1.getText().trim(),
+                    txtPaginaLibro1.getText().trim(),
+                    txtIsbnLibro.getText().trim());
+
+            libroDAO.actualizarLibro(libroAct);
+        }
+    }//GEN-LAST:event_btnActualizarLibroActionPerformed
 
     private void txtAutorLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAutorLibroActionPerformed
         // TODO add your handling code here:
@@ -359,7 +362,7 @@ public class editarLibro extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAgregarLibro;
+    private javax.swing.JButton btnActualizarLibro;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

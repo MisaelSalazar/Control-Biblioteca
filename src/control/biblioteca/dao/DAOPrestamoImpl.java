@@ -92,7 +92,7 @@ public class DAOPrestamoImpl extends conexion implements DAOPrestamos {
             // Conectarse a la BD
             DB db = this.Conexion().getDB("biblioteca");
             DBCollection prestamos = db.getCollection("prestamos");
-            
+
             // Obtener todos los prestamos
             DBCursor cursor = prestamos.find();
             // Creamos una lista para los prestamos
@@ -116,7 +116,7 @@ public class DAOPrestamoImpl extends conexion implements DAOPrestamos {
                 // Se agrega a la lista de prestamos
                 listaPrestamos.add(prestamo);
             }
-            
+
             // Devuelve una lista con los prestamos
             return listaPrestamos;
         } catch (Exception e) {

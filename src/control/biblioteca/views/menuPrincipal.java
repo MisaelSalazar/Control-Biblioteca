@@ -543,6 +543,11 @@ public class menuPrincipal extends javax.swing.JFrame {
                 txtCodigoLibroActionPerformed(evt);
             }
         });
+        txtCodigoLibro.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCodigoLibroKeyTyped(evt);
+            }
+        });
 
         jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel17.setText("Num. Control:");
@@ -698,6 +703,11 @@ public class menuPrincipal extends javax.swing.JFrame {
         txtCodigoLibroDevolucion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCodigoLibroDevolucionActionPerformed(evt);
+            }
+        });
+        txtCodigoLibroDevolucion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCodigoLibroDevolucionKeyTyped(evt);
             }
         });
 
@@ -1345,7 +1355,7 @@ public class menuPrincipal extends javax.swing.JFrame {
         String codigoLibro = txtCodigoLibro.getText().trim().toUpperCase();
         // Comprobar que los campos están llenados
         if (numControl.isEmpty() || codigoLibro.isEmpty()) {
-            msj.MensajeError("Por favor, rellena todos los campos", "Devolución de Libro");
+            msj.MensajeError("Por favor, rellena todos los campos", "Préstamo de Libro");
         } else {
             // Buscar al alumno en la base de datos
             Alumno alumno = alumnoDAO.buscarAlumnoPorNumeroControl(numControl);
@@ -1561,6 +1571,18 @@ public class menuPrincipal extends javax.swing.JFrame {
     private void txtNumControlDevolucionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumControlDevolucionKeyTyped
         limitarNoCtrl(txtNumControlDevolucion, evt);
     }//GEN-LAST:event_txtNumControlDevolucionKeyTyped
+
+    private void txtCodigoLibroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoLibroKeyTyped
+        if (txtCodigoLibro.getText().length() >= 6) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCodigoLibroKeyTyped
+
+    private void txtCodigoLibroDevolucionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoLibroDevolucionKeyTyped
+        if (txtCodigoLibroDevolucion.getText().length() >= 6) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCodigoLibroDevolucionKeyTyped
 
     /**
      * @param args the command line arguments

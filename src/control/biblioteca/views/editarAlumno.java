@@ -236,7 +236,7 @@ public class editarAlumno extends javax.swing.JFrame {
         } else {
             Alumno alumnoAct = new Alumno(
                     alumno.getId(),
-                    txtNumControl.getText().trim(),
+                    txtNumControl.getText().trim().toUpperCase(),
                     txtNombreAlumno.getText().trim(),
                     txtApellidosAlumno.getText().trim(),
                     jcbCarrera.getSelectedItem().toString(),

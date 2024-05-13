@@ -35,20 +35,30 @@ public class DAOLibroImpl extends conexion implements DAOLibros {
                 DB db = this.Conexion().getDB("biblioteca");
                 DBCollection libros = db.getCollection("libros");
 
-                // Preparar consulta
-                BasicDBObject consulta = new BasicDBObject();
-                consulta.put("identificador", libro.getIdentificador());
-                consulta.put("titulo", libro.getTitulo());
-                consulta.put("autor", libro.getAutor());
-                consulta.put("editorial", libro.getEditorial());
-                consulta.put("año", libro.getAnho());
-                consulta.put("paginas", libro.getPaginas());
-                consulta.put("ISBN", libro.getIsbn());
+                // Consulta para encontrar algun libro con el mismo numero de adquisicion
+                BasicDBObject encontrar = new BasicDBObject("identificador", libro.getIdentificador());
+                DBObject libroEncontrado = libros.findOne(encontrar);
 
-                // Almacenamos el resultado de la insercion
-                libros.insert(consulta);
-                // Retornamos TRUE
-                return true;
+                // Si encuentra un alumno entonces...
+                if (libroEncontrado == null) {
+                    // Preparar consulta
+                    BasicDBObject consulta = new BasicDBObject();
+                    consulta.put("identificador", libro.getIdentificador());
+                    consulta.put("titulo", libro.getTitulo());
+                    consulta.put("autor", libro.getAutor());
+                    consulta.put("editorial", libro.getEditorial());
+                    consulta.put("año", libro.getAnho());
+                    consulta.put("paginas", libro.getPaginas());
+                    consulta.put("ISBN", libro.getIsbn());
+
+                    // Almacenamos el resultado de la insercion
+                    libros.insert(consulta);
+                    // Retornamos TRUE
+                    return true;
+                } else {
+                    msj.MensajeError("Ya existe un libro con el identificador " + libro.getIdentificador(), "Registro de Libro");
+                    return false;
+                }
             } else {
                 msj.MensajeError("Los datos del libro estan incompletos", "Registro de Libro");
                 return false;

@@ -107,18 +107,28 @@ public class DAOAlumnoImpl extends conexion implements DAOAlumnos {
                 DB db = this.Conexion().getDB("biblioteca");
                 DBCollection alumnos = db.getCollection("alumnos");
 
-                // Preparar consulta
-                BasicDBObject consulta = new BasicDBObject();
-                consulta.put("noCtrl", alumno.getNumControl());
-                consulta.put("nombre", alumno.getNombre());
-                consulta.put("apellidos", alumno.getApellidos());
-                consulta.put("carrera", alumno.getCarrera());
-                consulta.put("semestre", alumno.getSemestre());
+                // Consulta para encontrar algun alumno con el mismo numero de control
+                BasicDBObject encontrar = new BasicDBObject("noCtrl", alumno.getNumControl());
+                DBObject alumnoEncontrado = alumnos.findOne(encontrar);
 
-                // Insertamos el alumno
-                alumnos.insert(consulta);
-                // Retornamos TRUE
-                return true;
+                // Si encuentra un alumno entonces...
+                if (alumnoEncontrado == null) {
+                    // Preparar consulta para insertar un nuevo alumno
+                    BasicDBObject consulta = new BasicDBObject();
+                    consulta.put("noCtrl", alumno.getNumControl());
+                    consulta.put("nombre", alumno.getNombre());
+                    consulta.put("apellidos", alumno.getApellidos());
+                    consulta.put("carrera", alumno.getCarrera());
+                    consulta.put("semestre", alumno.getSemestre());
+
+                    // Insertamos el alumno
+                    alumnos.insert(consulta);
+                    // Retornamos TRUE
+                    return true;
+                } else {
+                    msj.MensajeError("Ya existe un alumno con el número de control " + alumno.getNumControl(), "Registro de Alumno");
+                    return false;
+                }
             } else {
                 msj.MensajeError("Los datos del alumno estan incompletos", "Registro de Alumno");
                 return false;
@@ -154,7 +164,7 @@ public class DAOAlumnoImpl extends conexion implements DAOAlumnos {
 
                     // Actualizamos los datos del alumno encontrado
                     WriteResult resultado = alumnos.update(alumnoEncotrado, consulta);
-                    
+
                     if (resultado.getN() > 0) {
                         msj.MensajeExitoso("El alumno fue actualizado con éxito", "Actualizar Alumno");
                     } else {
