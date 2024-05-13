@@ -37,8 +37,6 @@ public class login extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         txtUserName = new javax.swing.JTextField();
         txtUserPassword = new javax.swing.JTextField();
-        btnCambiarContrasenha = new javax.swing.JButton();
-        btnNuevaCuenta = new javax.swing.JButton();
         btnAcceder = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
 
@@ -73,30 +71,6 @@ public class login extends javax.swing.JFrame {
         txtUserPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtUserPasswordActionPerformed(evt);
-            }
-        });
-
-        btnCambiarContrasenha.setBackground(new java.awt.Color(255, 206, 84));
-        btnCambiarContrasenha.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnCambiarContrasenha.setForeground(new java.awt.Color(0, 0, 0));
-        btnCambiarContrasenha.setText("Cambiar contraseña");
-        btnCambiarContrasenha.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        btnCambiarContrasenha.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnCambiarContrasenha.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCambiarContrasenhaActionPerformed(evt);
-            }
-        });
-
-        btnNuevaCuenta.setBackground(new java.awt.Color(93, 156, 236));
-        btnNuevaCuenta.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnNuevaCuenta.setForeground(new java.awt.Color(0, 0, 0));
-        btnNuevaCuenta.setText("Crear cuenta");
-        btnNuevaCuenta.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        btnNuevaCuenta.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnNuevaCuenta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNuevaCuentaActionPerformed(evt);
             }
         });
 
@@ -136,13 +110,10 @@ public class login extends javax.swing.JFrame {
                                 .addGap(169, 169, 169)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(txtUserName)
-                                    .addComponent(txtUserPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(btnNuevaCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btnCambiarContrasenha)))
+                                    .addComponent(txtUserPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(53, 53, 53))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(135, 135, 135)
+                        .addGap(155, 155, 155)
                         .addComponent(btnAcceder, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
@@ -164,12 +135,8 @@ public class login extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(22, 22, 22)
                                 .addComponent(txtUserPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(23, 23, 23)
-                        .addComponent(btnAcceder, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(24, 24, 24)
-                        .addComponent(btnNuevaCuenta)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCambiarContrasenha))
+                        .addGap(62, 62, 62)
+                        .addComponent(btnAcceder, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(58, 58, 58)
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -222,26 +189,6 @@ public class login extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnAccederActionPerformed
 
-    private void btnNuevaCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaCuentaActionPerformed
-        // TODO add your handling code here:
-        //Objeto ventana nueva cuenta
-        nuevaCuenta objNuevaCuenta = new nuevaCuenta();
-        //Centrar la ventana en la pantalla
-        objNuevaCuenta.setLocationRelativeTo(null);
-        //Hacer Visible la ventana
-        objNuevaCuenta.setVisible(true);
-    }//GEN-LAST:event_btnNuevaCuentaActionPerformed
-
-    private void btnCambiarContrasenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarContrasenhaActionPerformed
-        // TODO add your handling code here:
-        //Crear objeto ventana cambiar contraseña
-        cambiarContrasenha objCambiarContrasenha = new cambiarContrasenha();
-        //Centrar la ventana en la pantalla
-        objCambiarContrasenha.setLocationRelativeTo(null);
-        //Hcer visible la ventana
-        objCambiarContrasenha.setVisible(true);
-    }//GEN-LAST:event_btnCambiarContrasenhaActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -279,8 +226,6 @@ public class login extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAcceder;
-    private javax.swing.JButton btnCambiarContrasenha;
-    private javax.swing.JButton btnNuevaCuenta;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
