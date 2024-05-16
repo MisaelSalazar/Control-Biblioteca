@@ -35,20 +35,45 @@ public class DAOPrestamoImpl extends conexion implements DAOPrestamos {
             DB db = this.Conexion().getDB("biblioteca");
             DBCollection prestamos = db.getCollection("prestamos");
 
-            // Preparar consulta
+            // Verificar si el libro ya está prestado (fecha_devolucion es null)
+            BasicDBObject consultaBuscarLibro = new BasicDBObject();
+            consultaBuscarLibro.put("libro_id", prestamo.getLibro_id());
+            consultaBuscarLibro.put("fecha_devolucion", null);
+
+            DBObject libroPrestado = prestamos.findOne(consultaBuscarLibro);
+            if (libroPrestado != null) {
+                msj.MensajeError("El libro ya está prestado", "Préstamo de Libro");
+                return false;
+            }
+
+            // Verificar la cantidad de préstamos activos del alumno (sin fecha_devolucion)
+            BasicDBObject consultaCantidadPrestamos = new BasicDBObject();
+            consultaCantidadPrestamos.put("alumno_id", prestamo.getAlumno_id());
+            consultaCantidadPrestamos.put("fecha_devolucion", null); // Sin fecha de devolución
+            // COUNT devuelve el valor en tipo LONG
+            long prestamosActivos = prestamos.count(consultaCantidadPrestamos);
+            // int prestamosActivos = (int) prestamosActivosLong;
+
+            // Si ya tiene 3 o más préstamos activos, no se permitirá otro préstamo
+            if (prestamosActivos >= 3) {
+                msj.MensajeError("El alumno ya tiene 3 préstamos activos. \nDebe devolver al menos un libro antes de solicitar otro.", "Préstamo de Libro");
+                return false;
+            }
+
+            // Preparar consulta para insertar nuevo préstamo
             BasicDBObject consulta = new BasicDBObject();
             consulta.put("alumno_id", prestamo.getAlumno_id());
             consulta.put("libro_id", prestamo.getLibro_id());
             consulta.put("fecha_prestamo", prestamo.getFecha_prestamo());
-            consulta.put("fecha_devolucion", prestamo.getFecha_devolucion());
+            consulta.put("fecha_devolucion", null); // Asegurarse de que sea null al momento del préstamo
 
-            // Ejecutar consulta (insercion)
+            // Ejecutar consulta (inserción)
             prestamos.insert(consulta);
 
-            //msj.MensajeExitoso("Prestamo Concedido al Alumno con el ID \n" + prestamo.getAlumno_id(), "Préstamo de Libro");
+            msj.MensajeExitoso("Préstamo Concedido al Alumno con el ID \n" + prestamo.getAlumno_id(), "Préstamo de Libro");
             return true;
         } catch (Exception e) {
-            msj.MensajeError("Error al Realizar el Prestamo del Libro", "Préstamo de Libro");
+            msj.MensajeError("Error al Realizar el Préstamo del Libro: " + e.getMessage(), "Préstamo de Libro");
             return false;
         }
     }
@@ -132,22 +157,18 @@ public class DAOPrestamoImpl extends conexion implements DAOPrestamos {
             DB db = this.Conexion().getDB("biblioteca");
             DBCollection prestamos = db.getCollection("prestamos");
 
-            // Imprimir IDs para depuración
-            System.out.println("Alumno ID: " + alumno_id);
-            System.out.println("Libro ID: " + libro_id);
-
             // Preparar consulta para buscar el préstamo
             BasicDBObject consultaBuscar = new BasicDBObject();
             consultaBuscar.put("alumno_id", alumno_id);
             consultaBuscar.put("libro_id", libro_id);
+            // Esto es para asegurarnos que el libro aún no ha sido devuelto
+            consultaBuscar.put("fecha_devolucion", null);
 
             // Realizar la búsqueda del préstamo
-            DBCursor cursor = prestamos.find(consultaBuscar);
-            if (cursor.hasNext()) {
-                // Objecto para almacenar el documento de prestamo
-                DBObject prestamoDBObject = cursor.next();
+            DBObject prestamoExistente = prestamos.findOne(consultaBuscar);
+            if (prestamoExistente != null) {
                 // Almacenar id del prestamo
-                ObjectId id = (ObjectId) prestamoDBObject.get("_id");
+                ObjectId id = (ObjectId) prestamoExistente.get("_id");
 
                 // Consulta para actualizar la fecha de devolución
                 BasicDBObject consultaActualizar = new BasicDBObject();
@@ -166,12 +187,50 @@ public class DAOPrestamoImpl extends conexion implements DAOPrestamos {
                     return false;
                 }
             } else {
-                msj.MensajeError("No se encontró un préstamo para el alumno y libro especificados", "Devolución de Libro");
+                msj.MensajeError("No se encontró un préstamo o el libro ya fue devuelto", "Devolución de Libro");
                 return false;
             }
         } catch (Exception e) {
             msj.MensajeError("Error al realizar la devolución: " + e.getMessage(), "Devolución de Libro");
             return false;
+        }
+    }
+
+    @Override
+    public List<Prestamo> obtenerPrestamosActivosPorAlumno(ObjectId alumno_id) {
+        try {
+            // Conectarse a la BD
+            DB db = this.Conexion().getDB("biblioteca");
+            DBCollection prestamos = db.getCollection("prestamos");
+
+            // Preparar consulta para buscar los préstamos activos del alumno
+            BasicDBObject consulta = new BasicDBObject();
+            consulta.put("alumno_id", alumno_id);
+            // Solo los préstamos sin fecha de devolución
+            consulta.put("fecha_devolucion", null);
+
+            // Realizar la búsqueda de préstamos activos del alumno
+            DBCursor cursor = prestamos.find(consulta);
+
+            // Convertir los resultados a una lista de Prestamo
+            List<Prestamo> prestamosActivos = new ArrayList<>();
+            while (cursor.hasNext()) {
+                DBObject prestamoDBObject = cursor.next();
+                ObjectId id = (ObjectId) prestamoDBObject.get("_id");
+                Prestamo prestamo = new Prestamo(
+                        id,
+                        (ObjectId) prestamoDBObject.get("alumno_id"),
+                        (ObjectId) prestamoDBObject.get("libro_id"),
+                        (Date) prestamoDBObject.get("fecha_prestamo"),
+                        (Date) prestamoDBObject.get("fecha_devolucion")
+                );
+                prestamosActivos.add(prestamo);
+            }
+            // Devolver la lista con los prestamos activos.
+            return prestamosActivos;
+        } catch (Exception e) {
+            msj.MensajeError("Error al obtener los préstamos activos del alumno: " + e.getMessage(), "Consulta de Préstamos Activos");
+            return null;
         }
     }
 

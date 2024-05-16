@@ -53,7 +53,7 @@ db.prestamos.insertOne({
 
 db.prestamos.aggregate([
     {
-        $match: { "alumno_id": ObjectId(" ID del alumno xd ") } // 
+        $match: { "alumno_id": ObjectId("65ef7031466e8f880d12eddc") } // 
     },
     {
         $lookup: {
@@ -78,4 +78,34 @@ db.prestamos.aggregate([
         $unwind: "$libro" 
     }
 ]);
+
+// Vista de detalles de prestamos
+db.createView(
+  "prestamosDetalles",
+  "prestamos",
+  [
+    {
+      $lookup: {
+        from: "alumnos",
+        localField: "alumno_id",
+        foreignField: "_id",
+        as: "alumno"
+      }
+    },
+    {
+      $unwind: "$alumno"
+    },
+    {
+      $lookup: {
+        from: "libros",
+        localField: "libro_id",
+        foreignField: "_id",
+        as: "libro"
+      }
+    },
+    {
+      $unwind: "$libro"
+    }
+  ]
+);
 

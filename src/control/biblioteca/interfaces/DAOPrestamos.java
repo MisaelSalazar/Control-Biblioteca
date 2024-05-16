@@ -18,4 +18,5 @@ public interface DAOPrestamos {
     boolean eliminarPrestamo(ObjectId id);
     List<Prestamo> obtenerPrestamos();
     boolean realizarDevolucion(ObjectId alumno_id, ObjectId libro_id);
+    List<Prestamo> obtenerPrestamosActivosPorAlumno(ObjectId alumno_id);
 }
