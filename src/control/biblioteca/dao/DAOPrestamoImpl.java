@@ -16,8 +16,10 @@ import control.biblioteca.model.Prestamo;
 import control.biblioteca.model.conexion;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import org.bson.types.ObjectId;
 
 /**
@@ -157,37 +159,24 @@ public class DAOPrestamoImpl extends conexion implements DAOPrestamos {
             DB db = this.Conexion().getDB("biblioteca");
             DBCollection prestamos = db.getCollection("prestamos");
 
-            // Preparar consulta para buscar el préstamo
-            BasicDBObject consultaBuscar = new BasicDBObject();
-            consultaBuscar.put("alumno_id", alumno_id);
-            consultaBuscar.put("libro_id", libro_id);
-            // Esto es para asegurarnos que el libro aún no ha sido devuelto
-            consultaBuscar.put("fecha_devolucion", null);
+            // Obtener el préstamo activo
+            DBObject prestamoDBObject = obtenerPrestamoActivo(alumno_id, libro_id, prestamos);
+            if (prestamoDBObject != null) {
+                // Calcular el costo de retraso
+                double costoRetraso = calcularCostoRetraso(prestamoDBObject);
 
-            // Realizar la búsqueda del préstamo
-            DBObject prestamoExistente = prestamos.findOne(consultaBuscar);
-            if (prestamoExistente != null) {
-                // Almacenar id del prestamo
-                ObjectId id = (ObjectId) prestamoExistente.get("_id");
+                // Actualizar el préstamo en la base de datos
+                boolean actualizado = actualizarPrestamoConDevolucion(prestamoDBObject, costoRetraso, prestamos);
 
-                // Consulta para actualizar la fecha de devolución
-                BasicDBObject consultaActualizar = new BasicDBObject();
-                consultaActualizar.put("$set", new BasicDBObject("fecha_devolucion", new Date()));
-
-                // Preparar la consulta para actualizar el préstamo
-                BasicDBObject consulta = new BasicDBObject("_id", id);
-                WriteResult resultado = prestamos.update(consulta, consultaActualizar);
-
-                // Verificar si se actualizó correctamente
-                if (resultado.getN() > 0) {
-                    msj.MensajeExitoso("Devolución realizada con éxito", "Devolución de Libro");
+                if (actualizado) {
+                    msj.MensajeExitoso("Devolución realizada con éxito. El costo por retraso es de " + costoRetraso + " pesos.", "Devolución de Libro");
                     return true;
                 } else {
                     msj.MensajeError("Error al actualizar el préstamo", "Devolución de Libro");
                     return false;
                 }
             } else {
-                msj.MensajeError("No se encontró un préstamo o el libro ya fue devuelto", "Devolución de Libro");
+                msj.MensajeError("No se encontró un préstamo activo para el alumno y libro especificados", "Devolución de Libro");
                 return false;
             }
         } catch (Exception e) {
@@ -232,6 +221,49 @@ public class DAOPrestamoImpl extends conexion implements DAOPrestamos {
             msj.MensajeError("Error al obtener los préstamos activos del alumno: " + e.getMessage(), "Consulta de Préstamos Activos");
             return null;
         }
+    }
+
+    private DBObject obtenerPrestamoActivo(ObjectId alumno_id, ObjectId libro_id, DBCollection prestamos) {
+        BasicDBObject consultaBuscar = new BasicDBObject();
+        consultaBuscar.put("alumno_id", alumno_id);
+        consultaBuscar.put("libro_id", libro_id);
+        consultaBuscar.put("fecha_devolucion", null);
+
+        return prestamos.findOne(consultaBuscar);
+    }
+
+    private double calcularCostoRetraso(DBObject prestamoDBObject) {
+        Date fechaPrestamo = (Date) prestamoDBObject.get("fecha_prestamo");
+
+        // Calcular fecha límite (3 días después del préstamo)
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(fechaPrestamo);
+        cal.add(Calendar.DAY_OF_MONTH, 3);
+        Date fechaLimite = cal.getTime();
+
+        // Obtener la fecha actual
+        Date fechaActual = new Date();
+
+        // Calcular días de retraso
+        long diasRetraso = TimeUnit.DAYS.convert(fechaActual.getTime() - fechaLimite.getTime(), TimeUnit.MILLISECONDS);
+
+        // Calcular costo de retraso
+        if (fechaActual.after(fechaLimite)) {
+            return diasRetraso * 5; // 5 pesos por día de retraso
+        }
+        return 0;
+    }
+
+    private boolean actualizarPrestamoConDevolucion(DBObject prestamoDBObject, double costoRetraso, DBCollection prestamos) {
+        Date fechaActual = new Date();
+        BasicDBObject consultaActualizar = new BasicDBObject();
+        consultaActualizar.put("$set", new BasicDBObject("fecha_devolucion", fechaActual)
+                .append("costo_retraso", costoRetraso));
+
+        BasicDBObject consulta = new BasicDBObject("_id", prestamoDBObject.get("_id"));
+        WriteResult resultado = prestamos.update(consulta, consultaActualizar);
+
+        return resultado.getN() > 0;
     }
 
 }

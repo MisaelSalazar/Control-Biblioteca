@@ -108,4 +108,10 @@ db.createView(
     }
   ]
 );
+// Total pagado
+db.prestamos.aggregate([
+    { $match: { "alumno_id": ObjectId("65ef7031466e8f880d12eddc") } },
+    { $group: { _id: "$alumno_id", totalPagado: { $sum: "$costo_retraso" } } }
+])
+()
 
