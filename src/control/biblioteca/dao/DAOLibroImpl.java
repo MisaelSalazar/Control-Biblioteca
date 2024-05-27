@@ -138,6 +138,7 @@ public class DAOLibroImpl extends conexion implements DAOLibros {
                         return true;
                     }
                 } else {
+                    msj.MensajeError("Acción cancelada, el libro no se eliminó", "Eliminar Libro");
                     return false;
                 }
             } else {

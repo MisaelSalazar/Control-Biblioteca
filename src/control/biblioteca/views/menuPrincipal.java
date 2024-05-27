@@ -1363,7 +1363,7 @@ public class menuPrincipal extends javax.swing.JFrame {
             Libro libro = libroDAO.buscarLibroPorIdentificador(codigoLibro);
 
             if (alumno != null && libro != null) {
-                txtNombreAlumno.setText(alumno.getNombre());
+                txtNombreAlumno.setText(alumno.getNombre() + " " + alumno.getApellidos());
                 txtNombreLibro.setText(libro.getTitulo());
 
                 // Crear un objeto Prestamo con los datos obtenidos
