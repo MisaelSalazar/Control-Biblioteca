@@ -3,10 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/pepe_/Documents/Reporte%20de%20Practicas/Control-Biblioteca/src/control/biblioteca/ControlBiblioteca.java</file>
-            <file>file:/C:/Users/pepe_/Documents/Reporte%20de%20Practicas/Control-Biblioteca/src/control/biblioteca/dao/DAOLibroImpl.java</file>
-            <file>file:/C:/Users/pepe_/Documents/Reporte%20de%20Practicas/Control-Biblioteca/src/control/biblioteca/dao/DAOPrestamoImpl.java</file>
-            <file>file:/C:/Users/pepe_/Documents/Reporte%20de%20Practicas/Control-Biblioteca/src/control/biblioteca/views/menuPrincipal.java</file>
+            <file>file:/C:/Users/Misae/Documents/NetBeansProjects/Control-Biblioteca/src/control/biblioteca/views/login.java</file>
+            <file>file:/C:/Users/Misae/Documents/NetBeansProjects/Control-Biblioteca/src/control/biblioteca/views/vistasLibros/editarLibro.java</file>
+            <file>file:/C:/Users/Misae/Documents/NetBeansProjects/Control-Biblioteca/src/control/biblioteca/views/menuPrincipal.java</file>
+            <file>file:/C:/Users/Misae/Documents/NetBeansProjects/Control-Biblioteca/src/control/biblioteca/views/vistasLibros/nuevoLibro.java</file>
         </group>
     </open-files>
 </project-private>

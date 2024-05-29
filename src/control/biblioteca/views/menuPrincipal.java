@@ -1347,6 +1347,8 @@ public class menuPrincipal extends javax.swing.JFrame {
 
     private void btnVerPrestamosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerPrestamosActionPerformed
 
+        verPrestamos objVerPrestamos = new verPrestamos();
+        objVerPrestamos.setVisible(true);
     }//GEN-LAST:event_btnVerPrestamosActionPerformed
 
     private void btnPrestarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrestarActionPerformed
