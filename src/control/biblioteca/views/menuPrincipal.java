@@ -1365,9 +1365,6 @@ public class menuPrincipal extends javax.swing.JFrame {
             Libro libro = libroDAO.buscarLibroPorIdentificador(codigoLibro);
 
             if (alumno != null && libro != null) {
-                txtNombreAlumno.setText(alumno.getNombre() + " " + alumno.getApellidos());
-                txtNombreLibro.setText(libro.getTitulo());
-
                 // Crear un objeto Prestamo con los datos obtenidos
                 Prestamo prestamo = new Prestamo(null, alumno.getId(), libro.getId(), new Date(), null);
 
@@ -1376,6 +1373,8 @@ public class menuPrincipal extends javax.swing.JFrame {
 
                 // Mostrar MSJ dependiendo
                 if (prestado) {
+                    txtNombreAlumno.setText(alumno.getNombre() + " " + alumno.getApellidos());
+                    txtNombreLibro.setText(libro.getTitulo());
                     msj.MensajeExitoso("Préstamo realizado con éxito.", "Préstamo de Libro");
                 } else {
                     msj.MensajeError("Error al realizar el préstamo.", "Préstamo de Libro");

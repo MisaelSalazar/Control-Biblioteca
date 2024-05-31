@@ -6,6 +6,7 @@ package control.biblioteca.interfaces;
 
 import control.biblioteca.model.Prestamo;
 import java.util.List;
+import javax.swing.JTable;
 import org.bson.types.ObjectId;
 
 /**
@@ -19,4 +20,5 @@ public interface DAOPrestamos {
     List<Prestamo> obtenerPrestamos();
     boolean realizarDevolucion(ObjectId alumno_id, ObjectId libro_id);
     List<Prestamo> obtenerPrestamosActivosPorAlumno(ObjectId alumno_id);
+    void obtenerPrestamosActivosPorNumControl(String numeroControl, JTable tabla);
 }

@@ -18,7 +18,8 @@ public class Prestamo {
     private ObjectId libro_id;
     private Date fecha_prestamo;
     private Date fecha_devolucion;
-
+    //private int costo_retraso;
+    
     public Prestamo(ObjectId id, ObjectId alumno_id, ObjectId libro_id, Date fecha_prestamo, Date fecha_devolucion) {
         this.id = id;
         this.alumno_id = alumno_id;

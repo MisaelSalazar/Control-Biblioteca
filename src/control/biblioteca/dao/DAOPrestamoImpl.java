@@ -20,11 +20,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import org.bson.types.ObjectId;
 
 /**
  *
- * @author pepe_
+ * @author Patinho
  */
 public class DAOPrestamoImpl extends conexion implements DAOPrestamos {
 
@@ -223,6 +225,69 @@ public class DAOPrestamoImpl extends conexion implements DAOPrestamos {
         }
     }
 
+    @Override
+    public void obtenerPrestamosActivosPorNumControl(String numeroControl, JTable tabla) {
+        try {
+            // Conectarse a la BD
+            DB db = this.Conexion().getDB("biblioteca");
+            // Obtiene las colecciones -- prestamos, alumnos y libros --
+            DBCollection prestamosCollection = db.getCollection("prestamos");
+            DBCollection alumnosCollection = db.getCollection("alumnos");
+            DBCollection librosCollection = db.getCollection("libros");
+
+            // Preparar consulta para buscar los préstamos activos del alumno usando el número de control
+            BasicDBObject consultaAlumno = new BasicDBObject("noCtrl", numeroControl);
+            // Almacenar el documento en "alumno"
+            DBObject alumno = alumnosCollection.findOne(consultaAlumno);
+
+            if (alumno != null) {
+                // Obtenemos el modelo de la tabla
+                DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+                // Limpiar la tabla antes de agregar nuevos datos
+                modelo.setRowCount(0);
+
+                // Consultar los préstamos activos del alumno
+                BasicDBObject consultaPrestamos = new BasicDBObject("alumno_id", alumno.get("_id"));
+                // Solo los que tengan la fecha de devolucion en "null"
+                consultaPrestamos.put("fecha_devolucion", null);
+                DBCursor cursorPrestamos = prestamosCollection.find(consultaPrestamos);
+
+                // Mientras que cursor tenga documentos que leer sigue en el ciclo
+                while (cursorPrestamos.hasNext()) {
+                    // Lee un documento y se almacena en prestamo en cada iteracion
+                    DBObject prestamo = cursorPrestamos.next();
+                    // Obtiene el id del libro de la coleccion prestamos
+                    String idLibro = ((ObjectId) prestamo.get("libro_id")).toString();
+
+                    // Crea una consulta para buscar el libro por el ID obtenido de la coleccion prestamos
+                    BasicDBObject consultaLibro = new BasicDBObject("_id", new ObjectId(idLibro));
+                    // Se realiza la consulta a la colección libros para encontrar los datos del libro relacionado al prestamo
+                    DBObject libro = librosCollection.findOne(consultaLibro);
+                    // Damos formato a la fecha de prestamo y devolucion
+                    Date fechaPrestamo = (Date) prestamo.get("fecha_prestamo");
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                    String fechaPrestFormat = dateFormat.format(fechaPrestamo);
+                    // Calcular el costo por retraso
+                    double costoRetraso = calcularCostoRetraso(prestamo);
+
+                    // Añadimos los datos a la tabla
+                    modelo.addRow(new Object[]{
+                        alumno.get("noCtrl"),
+                        alumno.get("nombre") + " " + alumno.get("apellidos"),
+                        libro.get("titulo"),
+                        libro.get("identificador"),
+                        fechaPrestFormat,
+                        costoRetraso
+                    });
+                }
+            } else {
+                msj.MensajeError("No se encontró al alumno con el número de control: " + numeroControl, "Alumno no encontrado");
+            }
+        } catch (Exception e) {
+            msj.MensajeError("Error al obtener los préstamos activos del alumno: " + e.getMessage(), "Error");
+        }
+    }
+
     private DBObject obtenerPrestamoActivo(ObjectId alumno_id, ObjectId libro_id, DBCollection prestamos) {
         BasicDBObject consultaBuscar = new BasicDBObject();
         consultaBuscar.put("alumno_id", alumno_id);
@@ -255,14 +320,16 @@ public class DAOPrestamoImpl extends conexion implements DAOPrestamos {
     }
 
     private boolean actualizarPrestamoConDevolucion(DBObject prestamoDBObject, double costoRetraso, DBCollection prestamos) {
+        // Nueva fecha (actual) para la devolucion
         Date fechaActual = new Date();
+        // Preparamos la consulta para actualizar el Prestamo (devolverlo)
         BasicDBObject consultaActualizar = new BasicDBObject();
         consultaActualizar.put("$set", new BasicDBObject("fecha_devolucion", fechaActual)
                 .append("costo_retraso", costoRetraso));
 
         BasicDBObject consulta = new BasicDBObject("_id", prestamoDBObject.get("_id"));
         WriteResult resultado = prestamos.update(consulta, consultaActualizar);
-
+        // Devolvemos un valor V/F en base a la consulta hecha en la bd 
         return resultado.getN() > 0;
     }
 
