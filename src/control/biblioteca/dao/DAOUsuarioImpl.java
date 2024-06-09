@@ -28,49 +28,74 @@ public class DAOUsuarioImpl extends conexion implements DAOUsuario {
     private final Mensajes msj = new Mensajes();
 
     @Override
-    public void registrarUsuario(String usuario, String contrasena) {
+    public boolean registrarUsuario(String usuario, String contrasena) {
         try {
             // Encriptar la contrasena
             String contraEncrip = Encriptar.encriptarContrasena(contrasena);
             // Conectarse a la BD y obtener la coleccion USUARIOS
             DB db = this.Conexion().getDB("biblioteca");
             DBCollection usuarios = db.getCollection("usuarios");
-            // Preparar consulta de registro (insercion)
-            BasicDBObject consulta = new BasicDBObject();
-            consulta.put("nombreUsuario", usuario);
-            consulta.put("contrasena", contraEncrip);
-            // Ejecutar la consulta (registro del usuario)
-            usuarios.insert(consulta);
-            msj.MensajeExitoso("Usuario registrado exitosamente", "Registrar Usuario");
+
+            // Consulta para encontrar el usuario ADMIN
+            BasicDBObject encontrar = new BasicDBObject("nombreUsuario", usuario.equals("admin"));
+            DBObject usuarioEncontrado = usuarios.findOne(encontrar);
+
+            if (usuarioEncontrado != null) {
+                // Preparar consulta de registro (insercion)
+                BasicDBObject consulta = new BasicDBObject();
+                consulta.put("nombreUsuario", usuario);
+                consulta.put("contrasena", contraEncrip);
+                // Ejecutar la consulta (registro del usuario)
+                usuarios.insert(consulta);
+                msj.MensajeExitoso("Usuario registrado exitosamente", "Registrar Usuario");
+                return true;
+            } else {
+                msj.MensajeError("Ingrese otro nombre de usuario", "Registrar Usuario");
+                return false;
+            }
         } catch (Exception e) {
             msj.MensajeError("Error al guardar el usuario \n" + e.getMessage(), "Registrar Usuario");
+            return false;
         }
     }
 
     @Override
-    public void actualizarUsuario(Usuario usuario) {
+    public boolean actualizarUsuario(Usuario usuario) {
         try {
             // Conectarse a la BD y obtener la coleccion USUARIOS
             DB db = this.Conexion().getDB("biblioteca");
             DBCollection usuarios = db.getCollection("usuarios");
-            // Preparar consulta para encontrar al usuario en la BD
-            BasicDBObject consulta = new BasicDBObject("_id", usuario.getId());
-            DBObject usuarioEncontrado = usuarios.findOne(consulta);
-            // Si encontró un usuario entonces...
-            if (usuarioEncontrado != null) {
-                // Encriptar la contrasena
-                String contraEncrip = Encriptar.encriptarContrasena(usuario.getContrasena());
-                // Prepara la consulta para actualizar los datos del usuario (contrasena)
-                DBObject usuarioActualizado = new BasicDBObject("nombreUsuario", usuario.getNombreUsuario())
-                        .append("contrasena", contraEncrip);
-                // Actualizar los datos del usuario (contrasena)
-                usuarios.update(consulta, usuarioActualizado);
-                msj.MensajeExitoso("Usuario Actualizado Correctamente", "Actualizar Usuario");
+
+            // Consulta para encontrar algun alumno con el mismo numero de control
+            BasicDBObject encontrar = new BasicDBObject("nombreUsuario", usuario.equals("admin"));
+            DBObject adminEncontrado = usuarios.findOne(encontrar);
+
+            if (adminEncontrado != null) {
+                // Preparar consulta para encontrar al usuario en la BD
+                BasicDBObject consulta = new BasicDBObject("_id", usuario.getId());
+                DBObject usuarioEncontrado = usuarios.findOne(consulta);
+                // Si encontró un usuario entonces...
+                if (usuarioEncontrado != null) {
+                    // Encriptar la contrasena
+                    String contraEncrip = Encriptar.encriptarContrasena(usuario.getContrasena());
+                    // Prepara la consulta para actualizar los datos del usuario (contrasena)
+                    DBObject usuarioActualizado = new BasicDBObject("nombreUsuario", usuario.getNombreUsuario())
+                            .append("contrasena", contraEncrip);
+                    // Actualizar los datos del usuario (contrasena)
+                    usuarios.update(consulta, usuarioActualizado);
+                    msj.MensajeExitoso("Usuario Actualizado Correctamente", "Actualizar Usuario");
+                    return true;
+                } else {
+                    msj.MensajeError("Usuario inexistente en la base de datos", "Actualizar Usuario");
+                    return false;
+                }
             } else {
-                msj.MensajeError("Usuario inexistente en la base de datos", "Actualizar Usuario");
+                msj.MensajeError("No tienes acceso para hacer esta acción", "Actualizar Usuario");
+                return false;
             }
         } catch (Exception e) {
             msj.MensajeError("Error al actualizar el usuario \n" + e.getMessage(), "Actualizar Usuario");
+            return false;
         }
     }
 
@@ -132,7 +157,7 @@ public class DAOUsuarioImpl extends conexion implements DAOUsuario {
                 return null;
             }
         } catch (Exception e) {
-            msj.MensajeError("Error al buscar el usuario \n" + e.getMessage(), "Buscar Usuario");
+            //msj.MensajeError("Error al buscar el usuario \n" + e.getMessage(), "Buscar Usuario");
             return null;
         }
     }
@@ -153,7 +178,7 @@ public class DAOUsuarioImpl extends conexion implements DAOUsuario {
                 msj.MensajeExitoso("Inicio de sesión exitoso. Bienvenido " + usuario, "Inicio Exitoso");
                 return true;
             } else {
-                msj.MensajeError("Usuario o contraseña incorrectos", "Inicio Fallido");
+                //msj.MensajeError("Usuario o contraseña incorrectos", "Inicio Fallido");
                 return false;
             }
         } catch (Exception e) {

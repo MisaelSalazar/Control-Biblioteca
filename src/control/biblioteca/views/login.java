@@ -178,14 +178,14 @@ public class login extends javax.swing.JFrame {
             boolean inicio = usuarioDAO.validarCredenciales(usuario, contrasena);
             // Si las credenciales son correctas, entonces accede
             if (inicio == true) {
-                System.out.println("*Accede al Panel Principal*");
+                menuPrincipal obj = new menuPrincipal();
+                obj.setVisible(true);
+                obj.setLocationRelativeTo(null);
+                this.dispose();
             } else {
-                System.out.println("*Mensaje de Error*");
+                msj.MensajeError("El usuario o contraseña son incorrectos.", "Inicio de Sesión Erróneo");
             }
         }
-        menuPrincipal obj = new menuPrincipal();
-        obj.setVisible(true);
-        obj.setLocationRelativeTo(null);
 
     }//GEN-LAST:event_btnAccederActionPerformed
 

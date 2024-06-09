@@ -22,6 +22,7 @@ import control.biblioteca.views.vistasLibros.nuevoLibro;
 import control.biblioteca.views.vistasUsuarios.editarUsuario;
 import control.biblioteca.views.vistasUsuarios.nuevoUsuario;
 import java.awt.event.KeyEvent;
+import static java.lang.Thread.sleep;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -965,21 +966,19 @@ public class menuPrincipal extends javax.swing.JFrame {
             }
         });
 
+        tblUsuarios.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         tblUsuarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {null},
+                {null},
+                {null},
+                {null}
             },
             new String [] {
-                "ID", "Nombre"
+                "Nombre"
             }
         ));
         jScrollPane1.setViewportView(tblUsuarios);
-        if (tblUsuarios.getColumnModel().getColumnCount() > 0) {
-            tblUsuarios.getColumnModel().getColumn(0).setHeaderValue("Código");
-        }
 
         btnBuscar1.setBackground(new java.awt.Color(160, 212, 104));
         btnBuscar1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -1181,6 +1180,8 @@ public class menuPrincipal extends javax.swing.JFrame {
             System.out.println("ID del Libro seleccionado: " + idLibro.toHexString());
             // Devuelve el libro seleccionado
             return libroSeleccionado;
+        } else {
+            msj.MensajeError("No se ha seleccionado ningun Libro", "Libros");
         }
         return null;
     }
@@ -1197,13 +1198,15 @@ public class menuPrincipal extends javax.swing.JFrame {
             System.out.println("ID del Usuario seleccionado: " + idUsuario.toHexString());
             // Devuelve el usuario seleccionado
             return usuarioSeleccionado;
+        } else {
+            msj.MensajeError("No se ha seleccionado ningun Usuario", "Usuarios");
         }
         return null;
     }
 
     private void mostrarAlumnosEnTabla() {
         DefaultTableModel modelo = (DefaultTableModel) tblAlumnos.getModel();
-        limpiarTabla(modelo); // Limpia la tabla antes de agregar nuevos datos
+        limpiarTabla(modelo);
 
         List<Alumno> alumnos = alumnoDAO.obtenerAlumnos();
 
@@ -1244,7 +1247,6 @@ public class menuPrincipal extends javax.swing.JFrame {
 
         for (Usuario usuario : usuarios) {
             Object[] fila = {
-                usuario.getId(),
                 usuario.getNombreUsuario()
             };
             modelo.addRow(fila);
@@ -1376,8 +1378,20 @@ public class menuPrincipal extends javax.swing.JFrame {
                     txtNombreAlumno.setText(alumno.getNombre() + " " + alumno.getApellidos());
                     txtNombreLibro.setText(libro.getTitulo());
                     msj.MensajeExitoso("Préstamo realizado con éxito.", "Préstamo de Libro");
+                    Thread xd = new Thread();
+                    try {
+                        xd.sleep(1500);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(menuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    txtNombreAlumno.setText("");
+                    txtNombreLibro.setText("");
+                    txtNumControl.setText("");
+                    txtCodigoLibro.setText("");
                 } else {
                     msj.MensajeError("Error al realizar el préstamo.", "Préstamo de Libro");
+                    txtNumControl.setText("");
+                    txtCodigoLibro.setText("");
                 }
             }
         }
@@ -1408,38 +1422,39 @@ public class menuPrincipal extends javax.swing.JFrame {
             Libro libro = libroDAO.buscarLibroPorIdentificador(codigoLibro);
 
             if (alumno != null && libro != null) {
-                // Imprimir los datoss del Alumno
-                System.out.println("Datos del alumno:");
-                System.out.println("Nombre: " + alumno.getNombre());
-                System.out.println("Apellidos: " + alumno.getApellidos());
-                System.out.println("Carrera: " + alumno.getCarrera());
-                System.out.println("Semestre: " + alumno.getSemestre());
+//                // Imprimir los datoss del Alumno
+//                System.out.println("Datos del alumno:");
+//                System.out.println("Nombre: " + alumno.getNombre());
+//                System.out.println("Apellidos: " + alumno.getApellidos());
+//                System.out.println("Carrera: " + alumno.getCarrera());
+//                System.out.println("Semestre: " + alumno.getSemestre());
+//
+//                // Imprimir los datos del Libro
+//                System.out.println("\nDatos del libro:");
+//                System.out.println("Título: " + libro.getTitulo());
+//                System.out.println("Autor: " + libro.getAutor());
+//                System.out.println("Editorial: " + libro.getEditorial());
+//                System.out.println("Año: " + libro.getAnho());
+//                System.out.println("Páginas: " + libro.getPaginas());
+//                System.out.println("ISBN: " + libro.getIsbn());
+//
+//                // Imprimir los ID's 
+//                System.out.println("ID del alumno: " + alumno.getId());
+//                System.out.println("ID del libro: " + libro.getId());
 
-                // Imprimir los datos del Libro
-                System.out.println("\nDatos del libro:");
-                System.out.println("Título: " + libro.getTitulo());
-                System.out.println("Autor: " + libro.getAutor());
-                System.out.println("Editorial: " + libro.getEditorial());
-                System.out.println("Año: " + libro.getAnho());
-                System.out.println("Páginas: " + libro.getPaginas());
-                System.out.println("ISBN: " + libro.getIsbn());
-
-                // Imprimir los ID's 
-                System.out.println("ID del alumno: " + alumno.getId());
-                System.out.println("ID del libro: " + libro.getId());
-
-                // Almacenar los ID's
-                ObjectId alumnoId = alumno.getId();
-                ObjectId libroId = libro.getId();
-
+//                // Almacenar los ID's
+//                ObjectId alumnoId = alumno.getId();
+//                ObjectId libroId = libro.getId();
                 // Realizar la devolución del libro
-                boolean devolucionExitosa = prestamoDAO.realizarDevolucion(alumnoId, libroId);
-                System.out.println("ID del alumno: " + alumnoId);
-                System.out.println("ID del libro: " + libroId);
+                boolean devolucionExitosa = prestamoDAO.realizarDevolucion(alumno.getId(), libro.getId());
+//                System.out.println("ID del alumno: " + alumnoId);
+//                System.out.println("ID del libro: " + libroId);
 
                 if (devolucionExitosa) {
                     // devolucionExitosa == true, funcionó
                     txtNombreAlumnoDevolucion.setText(alumno.getNombre() + " " + alumno.getApellidos());
+                    txtNombreAlumnoDevolucion.setText("");
+                    txtNumControlDevolucion.setText("");
                 }
             }
         }
@@ -1461,9 +1476,16 @@ public class menuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_txtBuscarUsuarioActionPerformed
 
     private void btnAgregarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarUsuarioActionPerformed
-        nuevoUsuario objNuevoUsuario = new nuevoUsuario();
-        objNuevoUsuario.setVisible(true);
-        objNuevoUsuario.setLocationRelativeTo(null);
+        Usuario admin = usuarioDAO.buscarUsuarioPorNombre("admin");
+
+        if (admin == null) {
+            nuevoUsuario objNuevoUsuario = new nuevoUsuario();
+            objNuevoUsuario.setVisible(true);
+            objNuevoUsuario.setLocationRelativeTo(null);
+        } else {
+            msj.MensajeError("No tienes acceso para realizar esta acción", "Agregar Usuario");
+        }
+
     }//GEN-LAST:event_btnAgregarUsuarioActionPerformed
 
     private void btnBuscar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscar1ActionPerformed
@@ -1472,15 +1494,30 @@ public class menuPrincipal extends javax.swing.JFrame {
 
     private void btnBorrarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarUsuarioActionPerformed
         Usuario elimUsuario = seleccionarIdUsuario();
-        usuarioDAO.eliminarUsuario(elimUsuario.getId());
+        if (elimUsuario != null) {
+            usuarioDAO.eliminarUsuario(elimUsuario.getId());
+        } else {
+            msj.MensajeError("No se ha seleccionado ningún usuario", "Eliminar Usuario");
+        }
     }//GEN-LAST:event_btnBorrarUsuarioActionPerformed
 
     private void btnEditarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarUsuarioActionPerformed
-        // TODO add your handling code here:
-        editarUsuario objEditarUsuario = new editarUsuario();
-        objEditarUsuario.setVisible(true);
-        objEditarUsuario.setLocationRelativeTo(null);
-        objEditarUsuario.setUsuario(seleccionarIdUsuario());
+        Usuario admin = usuarioDAO.buscarUsuarioPorNombre("admin");
+        if (admin == null) {
+            Usuario editUsuario = seleccionarIdUsuario();
+            if (editUsuario != null) {
+                editarUsuario objEditarUsuario = new editarUsuario();
+                objEditarUsuario.setVisible(true);
+                objEditarUsuario.setLocationRelativeTo(null);
+                objEditarUsuario.setUsuario(editUsuario);
+            } else {
+                msj.MensajeError("No se ha seleccionado ningún usuario", "Editar Usuario");
+            }
+        } else {
+            msj.MensajeError("No tienes acceso para realizar esta acción", "Actualizar Usuario");
+        }
+
+
     }//GEN-LAST:event_btnEditarUsuarioActionPerformed
 
     private void txtBuscarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarLibroActionPerformed
@@ -1493,15 +1530,26 @@ public class menuPrincipal extends javax.swing.JFrame {
 
     private void btnBorrarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarLibroActionPerformed
         Libro elimLibro = seleccionarIdLibro();
-        libroDAO.eliminarLibro(elimLibro.getId());
+        if (elimLibro != null) {
+            libroDAO.eliminarLibro(elimLibro.getId());
+        } else {
+            msj.MensajeError("No se ha seleccionado ningún", "Eliminar Libro");
+        }
+
     }//GEN-LAST:event_btnBorrarLibroActionPerformed
 
     private void btnEditarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarLibroActionPerformed
         // TODO add your handling code here:
-        editarLibro objEditarLibro = new editarLibro();
-        objEditarLibro.setVisible(true);
-        objEditarLibro.setLocationRelativeTo(null);
-        objEditarLibro.setLibro(seleccionarIdLibro());
+        Libro editLib = seleccionarIdLibro();
+        if (editLib != null) {
+            editarLibro objEditarLibro = new editarLibro();
+            objEditarLibro.setVisible(true);
+            objEditarLibro.setLocationRelativeTo(null);
+            objEditarLibro.setLibro(editLib);
+        } else {
+            msj.MensajeError("No se ha seleccionado ningún Libro", "Editar Libro");
+        }
+
     }//GEN-LAST:event_btnEditarLibroActionPerformed
 
     private void btnAgregarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarLibroActionPerformed
@@ -1527,16 +1575,25 @@ public class menuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAgregarAlumnoActionPerformed
 
     private void btnEditarAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarAlumnoActionPerformed
-        // TODO add your handling code here:
-        editarAlumno objEditarAlumno = new editarAlumno();
-        objEditarAlumno.setVisible(true);
-        objEditarAlumno.setLocationRelativeTo(null);
-        objEditarAlumno.setAlumno(seleccionarIdAlumno());
+        Alumno editAlum = seleccionarIdAlumno();
+        if (editAlum != null) {
+            editarAlumno objEditarAlumno = new editarAlumno();
+            objEditarAlumno.setVisible(true);
+            objEditarAlumno.setLocationRelativeTo(null);
+            objEditarAlumno.setAlumno(editAlum);
+        } else {
+            msj.MensajeError("No se ha seleccionado ningún Alumno", "Alumnos");
+        }
+
     }//GEN-LAST:event_btnEditarAlumnoActionPerformed
 
     private void btnBorrarAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBorrarAlumnoActionPerformed
         Alumno elimAlumno = seleccionarIdAlumno();
-        alumnoDAO.eliminarAlumno(elimAlumno.getId());
+        if (elimAlumno != null) {
+            alumnoDAO.eliminarAlumno(elimAlumno.getId());
+        } else {
+            msj.MensajeError("No se ha seleccionado ningún Alumno", "Alumnos");
+        }
     }//GEN-LAST:event_btnBorrarAlumnoActionPerformed
 
     private void tblAlumnosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblAlumnosMouseClicked

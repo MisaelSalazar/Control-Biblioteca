@@ -111,7 +111,7 @@ public class DAOAlumnoImpl extends conexion implements DAOAlumnos {
                 BasicDBObject encontrar = new BasicDBObject("noCtrl", alumno.getNumControl());
                 DBObject alumnoEncontrado = alumnos.findOne(encontrar);
 
-                // Si encuentra un alumno entonces...
+                // Si no encuentra un alumno entonces...
                 if (alumnoEncontrado == null) {
                     // Preparar consulta para insertar un nuevo alumno
                     BasicDBObject consulta = new BasicDBObject();

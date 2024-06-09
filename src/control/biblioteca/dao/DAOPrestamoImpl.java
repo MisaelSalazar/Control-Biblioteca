@@ -74,7 +74,7 @@ public class DAOPrestamoImpl extends conexion implements DAOPrestamos {
             // Ejecutar consulta (inserción)
             prestamos.insert(consulta);
 
-            msj.MensajeExitoso("Préstamo Concedido al Alumno con el ID \n" + prestamo.getAlumno_id(), "Préstamo de Libro");
+            //msj.MensajeExitoso("Préstamo Concedido al Alumno con el ID \n" + prestamo.getAlumno_id(), "Préstamo de Libro");
             return true;
         } catch (Exception e) {
             msj.MensajeError("Error al Realizar el Préstamo del Libro: " + e.getMessage(), "Préstamo de Libro");
@@ -314,7 +314,8 @@ public class DAOPrestamoImpl extends conexion implements DAOPrestamos {
 
         // Calcular costo de retraso
         if (fechaActual.after(fechaLimite)) {
-            return diasRetraso * 5; // 5 pesos por día de retraso
+             // 5 pesos por día de retraso
+            return diasRetraso * 5;
         }
         return 0;
     }

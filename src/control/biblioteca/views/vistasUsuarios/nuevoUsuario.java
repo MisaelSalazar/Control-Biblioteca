@@ -175,19 +175,23 @@ public class nuevoUsuario extends javax.swing.JFrame {
             String contra2 = txtRepetirContrasenha.getText().trim();
             // Comprobamos que los campos no esten vacios
             if ("".equals(usuario) || "".equals(contra1) || "".equals(contra2)) {
-                msj.MensajeError("Rellena todos los campos", "Iniciar Sesión");
+                msj.MensajeError("Rellena todos los campos", "Registar Usuario");
             } else {
                 // Comparar si las cotrasenas ingresadas son iguales
                 if (contra1.equals(contra2)) {
                     // Llamar al metodo registrarUsuario
-                    usuarioDAO.registrarUsuario(usuario, contra1);
-                    msj.MensajeExitoso("Cuenta creada con éxito", "Iniciar Sesión");
+                    boolean insertado = usuarioDAO.registrarUsuario(usuario, contra1);
+                    if (insertado) {
+                        msj.MensajeExitoso("Cuenta creada con éxito", "Registar Usuario");
+                    } else {
+                        msj.MensajeError("Error al registrar al usuario", "Registar Usuario");
+                    }
                 } else {
-                    msj.MensajeError("Las contraseñas no coinciden", "Iniciar Sesión");
+                    msj.MensajeError("Las contraseñas no coinciden", "Registar Usuario");
                 }
             }
         } catch (Exception e) {
-            msj.MensajeError("Error de creación de cuenta: " + e, "Iniciar Sesión");
+            msj.MensajeError("Error de creación de cuenta: " + e, "Registar Usuario");
         }
     }//GEN-LAST:event_btnAgregarUsuarioActionPerformed
 
