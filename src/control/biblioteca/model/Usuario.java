@@ -15,11 +15,17 @@ public class Usuario {
     private ObjectId id;
     private String nombreUsuario;
     private String contrasena;
+    private String rol;
 
-    public Usuario(ObjectId id, String nombreUsuario, String contrasena) {
+    public Usuario() {
+
+    }
+
+    public Usuario(ObjectId id, String nombreUsuario, String contrasena, String rol) {
         this.id = id;
         this.nombreUsuario = nombreUsuario;
         this.contrasena = contrasena;
+        this.rol = rol;
     }
 
     public ObjectId getId() {
@@ -44,6 +50,14 @@ public class Usuario {
 
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
     }
 
 }

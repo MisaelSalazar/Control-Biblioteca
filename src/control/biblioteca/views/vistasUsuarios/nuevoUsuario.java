@@ -41,6 +41,8 @@ public class nuevoUsuario extends javax.swing.JFrame {
         btnAgregarUsuario = new javax.swing.JButton();
         txtContrasenhaUsuario = new javax.swing.JTextField();
         txtRepetirContrasenha = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        cbxRol = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -57,7 +59,7 @@ public class nuevoUsuario extends javax.swing.JFrame {
         jLabel3.setText("Contraseña");
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel4.setText("Repita la contraseña");
+        jLabel4.setText("Rol");
 
         txtNombreUsuario.setBackground(new java.awt.Color(204, 204, 204));
         txtNombreUsuario.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -100,6 +102,12 @@ public class nuevoUsuario extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel6.setText("Repita la contraseña");
+
+        cbxRol.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        cbxRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Asistente", "Administrador" }));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -111,19 +119,21 @@ public class nuevoUsuario extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
-                        .addGap(46, 46, 46)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel6))
+                        .addGap(30, 30, 30)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtNombreUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
                             .addComponent(txtRepetirContrasenha)
-                            .addComponent(txtContrasenhaUsuario)))
+                            .addComponent(txtContrasenhaUsuario)
+                            .addComponent(cbxRol, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(87, 87, 87)
                         .addComponent(jLabel5))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(158, 158, 158)
+                        .addGap(160, 160, 160)
                         .addComponent(btnAgregarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(55, Short.MAX_VALUE))
+                .addContainerGap(71, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -139,12 +149,18 @@ public class nuevoUsuario extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(txtContrasenhaUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(25, 25, 25)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtRepetirContrasenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
-                    .addComponent(txtRepetirContrasenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(cbxRol, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
                 .addComponent(btnAgregarUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41))
+                .addGap(19, 19, 19))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -155,9 +171,7 @@ public class nuevoUsuario extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -173,6 +187,8 @@ public class nuevoUsuario extends javax.swing.JFrame {
             String usuario = txtNombreUsuario.getText().trim();
             String contra1 = txtContrasenhaUsuario.getText().trim();
             String contra2 = txtRepetirContrasenha.getText().trim();
+            String rol = cbxRol.getSelectedItem().toString();
+            System.out.println("ROL SELECCIONADO: " + rol);
             // Comprobamos que los campos no esten vacios
             if ("".equals(usuario) || "".equals(contra1) || "".equals(contra2)) {
                 msj.MensajeError("Rellena todos los campos", "Registar Usuario");
@@ -180,7 +196,7 @@ public class nuevoUsuario extends javax.swing.JFrame {
                 // Comparar si las cotrasenas ingresadas son iguales
                 if (contra1.equals(contra2)) {
                     // Llamar al metodo registrarUsuario
-                    boolean insertado = usuarioDAO.registrarUsuario(usuario, contra1);
+                    boolean insertado = usuarioDAO.registrarUsuario(usuario, contra1, rol);
                     if (insertado) {
                         msj.MensajeExitoso("Cuenta creada con éxito", "Registar Usuario");
                     } else {
@@ -243,10 +259,12 @@ public class nuevoUsuario extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarUsuario;
+    private javax.swing.JComboBox<String> cbxRol;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField txtContrasenhaUsuario;
     private javax.swing.JTextField txtNombreUsuario;

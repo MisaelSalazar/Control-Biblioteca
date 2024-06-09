@@ -49,8 +49,8 @@ public class FiltrarUsuarios {
             // Verifica si el nombre del usuario contiene el filtro
             if (usuario.getNombreUsuario().toLowerCase().contains(filtro)) {
                 Object[] fila = {
-                    usuario.getId(),
-                    usuario.getNombreUsuario()
+                    usuario.getNombreUsuario(),
+                    usuario.getRol()
                 };
                 modelo.addRow(fila);
             }

@@ -176,7 +176,7 @@ public class nuevaCuenta extends javax.swing.JFrame {
                 // Comparar si las cotrasenas ingresadas son iguales
                 if (contra1.equals(contra2)) {
                     // Llamar al metodo registrarUsuario
-                    usuarioDAO.registrarUsuario(usuario, contra1);
+                    //usuarioDAO.registrarUsuario(usuario, contra1);
                     msj.MensajeExitoso("Cuenta creada con éxito", "Iniciar Sesión");
                 } else {
                     msj.MensajeError("Las contraseñas no coinciden", "Iniciar Sesión");

@@ -13,7 +13,7 @@ import org.bson.types.ObjectId;
  * @author patinho
  */
 public interface DAOUsuario {
-    boolean registrarUsuario(String usuario, String contrasena);
+    boolean registrarUsuario(String usuario, String contrasena, String rol);
     boolean actualizarUsuario(Usuario usuario);
     boolean eliminarUsuario(ObjectId id);
     Usuario buscarUsuarioPorNombre(String nombreUsuario);

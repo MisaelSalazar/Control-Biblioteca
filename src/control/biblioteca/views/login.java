@@ -16,9 +16,10 @@ import control.biblioteca.controlador.TextPrompt;
  */
 public class login extends javax.swing.JFrame {
 
+//    Usuario lg = new Usuario();
     private DAOUsuarioImpl usuarioDAO;
     private Mensajes msj = new Mensajes();
-
+    
     public login() {
         super("Control Biblioteca");
         usuarioDAO = new DAOUsuarioImpl();
@@ -26,7 +27,7 @@ public class login extends javax.swing.JFrame {
         TextPrompt placeholder = new TextPrompt("Ingresa tu usuario", txtUserName);
         placeholder = new TextPrompt("Ingresa tu contraseña", txtUserPassword);
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -178,7 +179,9 @@ public class login extends javax.swing.JFrame {
             boolean inicio = usuarioDAO.validarCredenciales(usuario, contrasena);
             // Si las credenciales son correctas, entonces accede
             if (inicio == true) {
-                menuPrincipal obj = new menuPrincipal();
+                Usuario lg = usuarioDAO.validarCredencialesUs(usuario, contrasena);
+//                System.out.println("RTOLLL " + lg.getRol());
+                menuPrincipal obj = new menuPrincipal(lg);
                 obj.setVisible(true);
                 obj.setLocationRelativeTo(null);
                 this.dispose();

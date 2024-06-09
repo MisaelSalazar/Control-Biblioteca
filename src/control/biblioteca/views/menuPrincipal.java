@@ -47,18 +47,26 @@ public class menuPrincipal extends javax.swing.JFrame {
     private FiltrarUsuarios filtroUsuarios;
 
     public menuPrincipal() {
+        initComponents();
+    }
+
+    public menuPrincipal(Usuario priv) {
         super("Control Biblioteca");
         usuarioDAO = new DAOUsuarioImpl();
         libroDAO = new DAOLibroImpl();
         prestamoDAO = new DAOPrestamoImpl();
         alumnoDAO = new DAOAlumnoImpl();
         initComponents();
+//        System.out.println("rol" + priv.getRol());
+        if (priv.getRol().equals("Asistente")) {
+            btnUsuarios.setEnabled(false);
+            lblUsuarioActivo.setText("Usuario: " + priv.getNombreUsuario());
+        } else {
+            lblUsuarioActivo.setText("Usuario: " + priv.getNombreUsuario());
+        }
         this.filtroLibros = new FiltrarLibros(libroDAO, txtBuscarLibro, tblLibros);
         this.filtroalAlumnos = new FiltrarAlumnos(alumnoDAO, txtBuscarAlumnos, tblAlumnos);
         this.filtroUsuarios = new FiltrarUsuarios(usuarioDAO, txtBuscarUsuario, tblUsuarios);
-        mostrarLibrosEnTabla();
-        mostrarAlumnosEnTabla();
-        mostrarUsuariosEnTabla();
         TextPrompt placeholder = new TextPrompt("Ingrese el número de control", txtNumControl);
         placeholder = new TextPrompt("Ingresa el código del libro", txtCodigoLibro);
         placeholder = new TextPrompt("Ingrese el número de control", txtNumControlDevolucion);
@@ -81,6 +89,7 @@ public class menuPrincipal extends javax.swing.JFrame {
         btnAlumnos = new javax.swing.JButton();
         btnUsuarios = new javax.swing.JButton();
         btnReportes = new javax.swing.JButton();
+        lblUsuarioActivo = new javax.swing.JLabel();
         contenedor = new javax.swing.JPanel();
         reportes = new javax.swing.JPanel();
         jLabel23 = new javax.swing.JLabel();
@@ -246,6 +255,11 @@ public class menuPrincipal extends javax.swing.JFrame {
             }
         });
 
+        lblUsuarioActivo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblUsuarioActivo.setForeground(new java.awt.Color(255, 255, 255));
+        lblUsuarioActivo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblUsuarioActivo.setText("Usuario Activo: ");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -253,19 +267,25 @@ public class menuPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnUsuarios)
-                    .addComponent(btnLibros, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnPrestamos)
-                    .addComponent(btnDevoluciones)
-                    .addComponent(btnAlumnos)
-                    .addComponent(btnInicio)
-                    .addComponent(btnReportes))
-                .addContainerGap(19, Short.MAX_VALUE))
+                    .addComponent(lblUsuarioActivo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnUsuarios)
+                            .addComponent(btnLibros, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnPrestamos)
+                            .addComponent(btnDevoluciones)
+                            .addComponent(btnAlumnos)
+                            .addComponent(btnInicio)
+                            .addComponent(btnReportes))
+                        .addGap(0, 13, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(46, 46, 46)
+                .addGap(42, 42, 42)
+                .addComponent(lblUsuarioActivo, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(btnInicio)
                 .addGap(18, 18, 18)
                 .addComponent(btnLibros)
@@ -279,7 +299,7 @@ public class menuPrincipal extends javax.swing.JFrame {
                 .addComponent(btnUsuarios)
                 .addGap(18, 18, 18)
                 .addComponent(btnReportes)
-                .addContainerGap(156, Short.MAX_VALUE))
+                .addContainerGap(102, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 170, 520));
@@ -969,13 +989,13 @@ public class menuPrincipal extends javax.swing.JFrame {
         tblUsuarios.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         tblUsuarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
             },
             new String [] {
-                "Nombre"
+                "Nombre", "Rol"
             }
         ));
         jScrollPane1.setViewportView(tblUsuarios);
@@ -1247,7 +1267,8 @@ public class menuPrincipal extends javax.swing.JFrame {
 
         for (Usuario usuario : usuarios) {
             Object[] fila = {
-                usuario.getNombreUsuario()
+                usuario.getNombreUsuario(),
+                usuario.getRol()
             };
             modelo.addRow(fila);
         }
@@ -1278,6 +1299,7 @@ public class menuPrincipal extends javax.swing.JFrame {
 
     private void btnLibrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLibrosActionPerformed
         // TODO add your handling code here:
+        mostrarLibrosEnTabla();
         inicio.setVisible(false);
         libros.setVisible(true);
         prestamos.setVisible(false);
@@ -1311,6 +1333,7 @@ public class menuPrincipal extends javax.swing.JFrame {
 
     private void btnAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlumnosActionPerformed
         // TODO add your handling code here:
+        mostrarAlumnosEnTabla();
         inicio.setVisible(false);
         libros.setVisible(false);
         prestamos.setVisible(false);
@@ -1322,6 +1345,7 @@ public class menuPrincipal extends javax.swing.JFrame {
 
     private void btnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuariosActionPerformed
         // TODO add your handling code here:
+        mostrarUsuariosEnTabla();
         inicio.setVisible(false);
         libros.setVisible(false);
         prestamos.setVisible(false);
@@ -1476,15 +1500,9 @@ public class menuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_txtBuscarUsuarioActionPerformed
 
     private void btnAgregarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarUsuarioActionPerformed
-        Usuario admin = usuarioDAO.buscarUsuarioPorNombre("admin");
-
-        if (admin == null) {
-            nuevoUsuario objNuevoUsuario = new nuevoUsuario();
-            objNuevoUsuario.setVisible(true);
-            objNuevoUsuario.setLocationRelativeTo(null);
-        } else {
-            msj.MensajeError("No tienes acceso para realizar esta acción", "Agregar Usuario");
-        }
+        nuevoUsuario objNuevoUsuario = new nuevoUsuario();
+        objNuevoUsuario.setVisible(true);
+        objNuevoUsuario.setLocationRelativeTo(null);
 
     }//GEN-LAST:event_btnAgregarUsuarioActionPerformed
 
@@ -1502,21 +1520,15 @@ public class menuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBorrarUsuarioActionPerformed
 
     private void btnEditarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarUsuarioActionPerformed
-        Usuario admin = usuarioDAO.buscarUsuarioPorNombre("admin");
-        if (admin == null) {
-            Usuario editUsuario = seleccionarIdUsuario();
-            if (editUsuario != null) {
-                editarUsuario objEditarUsuario = new editarUsuario();
-                objEditarUsuario.setVisible(true);
-                objEditarUsuario.setLocationRelativeTo(null);
-                objEditarUsuario.setUsuario(editUsuario);
-            } else {
-                msj.MensajeError("No se ha seleccionado ningún usuario", "Editar Usuario");
-            }
+        Usuario editUsuario = seleccionarIdUsuario();
+        if (editUsuario != null) {
+            editarUsuario objEditarUsuario = new editarUsuario();
+            objEditarUsuario.setVisible(true);
+            objEditarUsuario.setLocationRelativeTo(null);
+            objEditarUsuario.setUsuario(editUsuario);
         } else {
-            msj.MensajeError("No tienes acceso para realizar esta acción", "Actualizar Usuario");
+            msj.MensajeError("No se ha seleccionado ningún usuario", "Editar Usuario");
         }
-
 
     }//GEN-LAST:event_btnEditarUsuarioActionPerformed
 
@@ -1736,6 +1748,7 @@ public class menuPrincipal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel lblUsuarioActivo;
     private javax.swing.JPanel libros;
     private javax.swing.JPanel prestamos;
     private javax.swing.JPanel reportes;

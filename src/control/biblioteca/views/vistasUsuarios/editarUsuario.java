@@ -185,11 +185,10 @@ public class editarUsuario extends javax.swing.JFrame {
             msj.MensajeError("Por favor, rellena todos los campos", "Actualizar Usuario");
         } else {
             if (txtContrasenhaUsuario.getText().trim().equals(txtRepetirContrasenha.getText().trim())) {
-                Usuario usuarioAct = new Usuario(
-                        usuario.getId(),
-                        txtNombreUsuario.getText().trim(),
-                        txtContrasenhaUsuario.getText().trim()
-                );
+                Usuario usuarioAct = new Usuario();
+                usuarioAct.setId(usuario.getId());
+                usuarioAct.setNombreUsuario(txtNombreUsuario.getText().trim());
+                usuarioAct.setContrasena(txtContrasenhaUsuario.getText().trim());
                 usuarioDAO.actualizarUsuario(usuarioAct);
             } else {
                 msj.MensajeError("Las contraseñas no coinciden", "Actualizar Usuario");
