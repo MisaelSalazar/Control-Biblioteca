@@ -51,6 +51,17 @@ public class editarLibro extends javax.swing.JFrame {
         txtIsbnLibro.setText(libro.getIsbn());
     }
 
+    private void limpiar() {
+        String t = "";
+        txtTituloLibro.setText(t);
+        txtEditorialLibro.setText(t);
+        txtAutorLibro.setText(t);
+        txtPaginaLibro1.setText(t);
+        txtIdentificadorLibro.setText(t);
+        txtAnhoLibro1.setText(t);
+        txtIsbnLibro.setText(t);
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -295,7 +306,13 @@ public class editarLibro extends javax.swing.JFrame {
                     txtPaginaLibro1.getText().trim(),
                     txtIsbnLibro.getText().trim());
 
-            libroDAO.actualizarLibro(libroAct);
+            boolean insertado = libroDAO.actualizarLibro(libroAct);
+            if (insertado) {
+                msj.MensajeExitoso("El libro fue actualizado con éxito", "Actualizar Libro");
+                limpiar();
+            } else {
+                msj.MensajeError("No se actualizaron los datos del libro", "Actualizar Libro");
+            }
         }
     }//GEN-LAST:event_btnActualizarLibroActionPerformed
 

@@ -14,7 +14,7 @@ import org.bson.types.ObjectId;
  */
 public interface DAOLibros {
     boolean registrarLibro(Libro libro);
-    void actualizarLibro(Libro libro);
+    boolean actualizarLibro(Libro libro);
     boolean eliminarLibro(ObjectId id);
     List<Libro> obtenerLibros();
     Libro buscarLibroPorIdentificador(String identificador);

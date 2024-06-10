@@ -35,6 +35,17 @@ public class nuevoLibro extends javax.swing.JFrame {
         placeholder = new TextPrompt("Ingrese el Num. ISBN", txtIsbnLibro);
     }
 
+    private void limpiar() {
+        String t = "";
+        txtTituloLibro.setText(t);
+        txtEditorialLibro.setText(t);
+        txtAutorLibro.setText(t);
+        txtPaginasLibro.setText(t);
+        txtIdentificadorLibro.setText(t);
+        txtAnhoLibro.setText(t);
+        txtIsbnLibro.setText(t);
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -287,6 +298,7 @@ public class nuevoLibro extends javax.swing.JFrame {
             // Si insertado (true) entonces msj de exito
             if (insertado) {
                 msj.MensajeExitoso("El libro ha sido registrado correctamente", "Registro de Libro");
+                limpiar();
             } else {
                 msj.MensajeError("Error al registrar el libro", "Registro de Libro");
             }

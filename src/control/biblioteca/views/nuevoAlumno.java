@@ -33,6 +33,12 @@ public class nuevoAlumno extends javax.swing.JFrame {
         placeholder = new TextPrompt("Ingrese el Num. Control", txtNumControl);
     }
 
+    private void limpiar() {
+        txtNombreAlumno.setText("");
+        txtApellidosAlumno.setText("");
+        txtNumControl.setText("");
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -103,7 +109,7 @@ public class nuevoAlumno extends javax.swing.JFrame {
 
         jcbCarrera.setBackground(new java.awt.Color(204, 204, 204));
         jcbCarrera.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jcbCarrera.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione una opción", "Ing. Industrial", "Ing. Sistemas Computacionales" }));
+        jcbCarrera.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ing. Industrial", "Ing. Sistemas Computacionales" }));
         jcbCarrera.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcbCarreraActionPerformed(evt);
@@ -233,6 +239,7 @@ public class nuevoAlumno extends javax.swing.JFrame {
 
             // Si insertado (true) entonces msj de exito
             if (insertado) {
+                limpiar();
                 msj.MensajeExitoso("El alumno ha sido registrado correctamente", "Registro de Alumno");
             } else {
                 msj.MensajeError("Error al registrar el alumno", "Registro de Alumno");

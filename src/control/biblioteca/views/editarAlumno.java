@@ -41,6 +41,14 @@ public class editarAlumno extends javax.swing.JFrame {
         txtNumControl.setText(alumno.getNumControl());
         txtNombreAlumno.setText(alumno.getNombre());
         txtApellidosAlumno.setText(alumno.getApellidos());
+        jcbCarrera.setSelectedItem(alumno.getCarrera().toString());
+        jcbSemestre.setSelectedItem(alumno.getSemestre());
+    }
+
+    private void limpiar() {
+        txtNumControl.setText("");
+        txtNombreAlumno.setText("");
+        txtApellidosAlumno.setText("");
         jcbCarrera.setSelectedItem(alumno.getCarrera());
         jcbSemestre.setSelectedItem(alumno.getSemestre());
     }
@@ -120,7 +128,7 @@ public class editarAlumno extends javax.swing.JFrame {
 
         jcbCarrera.setBackground(new java.awt.Color(204, 204, 204));
         jcbCarrera.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jcbCarrera.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione una opción", "Ing. Industrial", "Ing. Sistemas Computacionales" }));
+        jcbCarrera.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ing. Industrial", "Ing. Sistemas Computacionales" }));
         jcbCarrera.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcbCarreraActionPerformed(evt);
@@ -243,6 +251,7 @@ public class editarAlumno extends javax.swing.JFrame {
                     jcbSemestre.getSelectedItem().toString());
 
             alumnoDAO.actualizarAlumno(alumnoAct);
+            limpiar();
         }
     }//GEN-LAST:event_btnActualizarAlumnoActionPerformed
 

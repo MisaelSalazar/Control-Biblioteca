@@ -70,7 +70,7 @@ public class DAOLibroImpl extends conexion implements DAOLibros {
     }
 
     @Override
-    public void actualizarLibro(Libro libro) {
+    public boolean actualizarLibro(Libro libro) {
         try {
             // Si libro es diferente de nulo entonces...
             if (libro != null) {
@@ -98,16 +98,20 @@ public class DAOLibroImpl extends conexion implements DAOLibros {
                     WriteResult resultado = libros.update(libroEncontrado, consulta);
                     // Verificamos que se realizo una consulta en la BD
                     if (resultado.getN() > 0) {
-                        msj.MensajeExitoso("El libro fue actualizado con éxito", "Actualizar Libro");
+                        return true;
                     } else {
-                        msj.MensajeError("No se actualizaron los datos del libro", "Actualizar Libro");
+                        return false;
                     }
                 } else {
                     msj.MensajeError("El libro con el identificador " + libro.getIdentificador() + " no fue encontrado", "Actualizar Libro");
+                    return false;
                 }
+            } else {
+                return false;
             }
         } catch (Exception e) {
             msj.MensajeError("Error al actualizar los datos del libro \n" + e.getMessage(), "Actualizar Libro");
+            return false;
         }
     }
 
